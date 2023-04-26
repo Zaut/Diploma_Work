@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
-    tools:context=".FragmentRegistration">
+    tools:context=".FragmentSignIn">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -28,9 +28,10 @@
             android:textSize="57dp"
             android:textColor="@color/woc"/>
         <TextView
+            android:id="@+id/loginTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login:"
+            android:text="Login"
             android:textSize="22dp"
             android:textColor="@color/white"/>
          <EditText
@@ -40,9 +41,10 @@
              android:backgroundTint="@color/white"
              android:textColor="@color/white"/>
         <TextView
+            android:id="@+id/passTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password:"
+            android:text="Password"
             android:textSize="22dp"
             android:textColor="@color/white"/>
         <EditText
@@ -62,13 +64,15 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:text="LogIn"/>
+
             <Button
                 android:id="@+id/btn_signin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="SignIn"/>
+                android:onClick="GetTextFromSQL"
+                android:text="SignIn" />
         </LinearLayout>
 
 

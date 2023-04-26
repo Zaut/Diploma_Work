@@ -7,11 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/my_fragment"
+    <FrameLayout
+        android:id="@+id/Frame_Layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name ="com.example.diploma_work.FragmentRegistration"/>
+        />
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/fr_place"-->
+<!--        android:name="com.example.diploma_work.FragmentSignIn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        tools:layout="@layout/fragment_registration" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/my_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:name ="com.example.diploma_work.FragmentSignIn"-->
+<!--        tools:layout="@layout/fragment_registration" />-->
 
 
 
