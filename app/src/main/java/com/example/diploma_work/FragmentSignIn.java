@@ -37,8 +37,8 @@ public class FragmentSignIn extends Fragment {
 
 
 
-        loginEditText =  view.findViewById(R.id.login);
-        passwordEditText  =  view.findViewById(R.id.pass);
+        loginEditText =  view.findViewById(R.id.EmailSignIn);
+        passwordEditText  =  view.findViewById(R.id.PasswordSignIn);
         registerButton =  view.findViewById(R.id.btn_signin);
 
 
@@ -47,7 +47,7 @@ public class FragmentSignIn extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Fragment SignIn = new Fragnment_SignUp();
+                 Fragment SignIn = new Fragnment_SignUp();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.Frame_Layout, SignIn);

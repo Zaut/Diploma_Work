@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="woc">#336699</color>
     <color name="red">#fa0505</color>
+    <color name="edit_text">#C2D2E9</color>
+    <color name="button">#5E83BA</color>
 </resources>

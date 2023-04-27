@@ -104,7 +104,7 @@ public class Fragnment_SignUp extends Fragment {
             }
         });
         Cancel.setOnClickListener(new View.OnClickListener() {
-//
+
             @Override
             public void onClick(View view) {
 

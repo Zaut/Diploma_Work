@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:background="@drawable/gradient_bg"
     tools:context=".FragmentSignIn">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,43 +16,47 @@
         android:orientation="vertical">
 
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo2"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/owlbluelogo"/>
+            />
         <TextView
-            android:layout_gravity="center"
+            android:layout_marginRight="104dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WOC"
-            android:textSize="57dp"
-            android:textColor="@color/woc"/>
-        <TextView
-            android:id="@+id/loginTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textSize="22dp"
-            android:textColor="@color/white"/>
-         <EditText
-             android:id="@+id/login"
-             android:layout_width="match_parent"
-             android:layout_height="45dp"
-             android:backgroundTint="@color/white"
-             android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/passTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textSize="22dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:text="Введите Имя:"
+            />
         <EditText
-            android:id="@+id/pass"
+            android:id="@+id/EmailSignIn"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/white"/>
+            android:layout_height="30dp"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:layout_marginBottom="20dp"
+            android:background="@color/edit_text"
+            />
+        <TextView
+            android:layout_marginRight="104dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Введите Имя:"
+            />
+        <EditText
+
+            android:id="@+id/PasswordSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:layout_marginBottom="20dp"
+            android:background="@color/edit_text"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +67,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:text="LogIn"/>
+                android:textColor="@color/white"
+                android:background="@drawable/button_registration"
+                android:text="Log In"/>
 
             <Button
                 android:id="@+id/btn_signin"
@@ -72,6 +78,8 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="GetTextFromSQL"
+                android:textColor="@color/white"
+                android:background="@drawable/button_registration"
                 android:text="SignIn" />
         </LinearLayout>
 
