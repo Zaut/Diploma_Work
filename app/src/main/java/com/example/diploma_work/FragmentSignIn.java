@@ -22,7 +22,7 @@ public class FragmentSignIn extends Fragment {
     String Connectionesult = "";
 
     private EditText loginEditText , passwordEditText ;
-    private Button registerButton;
+    private Button registerButton, SignIntButton;
     TextView tx1, tx2;
 
     public FragmentSignIn(){
@@ -40,6 +40,7 @@ public class FragmentSignIn extends Fragment {
         loginEditText =  view.findViewById(R.id.EmailSignIn);
         passwordEditText  =  view.findViewById(R.id.PasswordSignIn);
         registerButton =  view.findViewById(R.id.btn_signin);
+        SignIntButton = view.findViewById(R.id.btn_login);
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +58,23 @@ public class FragmentSignIn extends Fragment {
             }
 
         });
+
+        SignIntButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Fragment SignIn = new Fragment_level();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.Frame_Layout, SignIn);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+
+        });
+
 
 
 

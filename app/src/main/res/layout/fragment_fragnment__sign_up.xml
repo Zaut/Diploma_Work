@@ -15,14 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-<!--        <ImageView-->
 
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="50dp"-->
-<!--            android:src="@drawable/logo"/>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/logo2" />
         <TextView
-            android:layout_marginRight="104dp"
             android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,8 +37,7 @@
             android:id="@+id/FirstName"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
+
             android:layout_marginBottom="20dp"
             android:background="@color/edit_text"
             />
@@ -44,15 +46,14 @@
             android:layout_height="wrap_content"
             android:text="Введите Фамилию"
             android:textColor="@color/white"
-            android:layout_marginRight="89dp"
+
             android:layout_marginBottom="10dp"
             />
         <EditText
             android:id="@+id/SecondName"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
+
             android:layout_marginBottom="20dp"
             android:background="@color/edit_text"
          />
@@ -61,15 +62,13 @@
             android:layout_height="wrap_content"
             android:text="Введите Вашу почту"
             android:textColor="@color/white"
-            android:layout_marginRight="104dp"
+
             android:layout_marginBottom="10dp"
             />
         <EditText
             android:id="@+id/Email"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
             android:layout_marginBottom="20dp"
             android:background="@color/edit_text"
             />
@@ -78,15 +77,14 @@
             android:layout_height="wrap_content"
             android:text="Введите Ваш пароль"
             android:textColor="@color/white"
-            android:layout_marginRight="104dp"
+
             android:layout_marginBottom="10dp"
             />
         <EditText
             android:id="@+id/pass1"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
+
             android:layout_marginBottom="20dp"
             android:background="@color/edit_text"
             />
@@ -95,7 +93,6 @@
             android:layout_height="wrap_content"
             android:text="Проверка пароля"
             android:textColor="@color/white"
-            android:layout_marginRight="104dp"
             android:layout_marginBottom="10dp"
             />
 
@@ -103,21 +100,19 @@
             android:id="@+id/pass2"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
             android:layout_marginBottom="20dp"
             android:background="@color/edit_text"
             />
 
         <TextView
+            android:layout_gravity="center"
             android:id="@+id/error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="104dp"
-            android:layout_marginBottom="10dp"
             android:text="Пароли не совпадают"
             android:textColor="@color/red"
             android:visibility="invisible" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -134,7 +129,7 @@
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Canя то cel"
+                android:text="Cancel"
                 />
         </LinearLayout>
 

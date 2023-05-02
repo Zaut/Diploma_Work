@@ -1,75 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_bg"
     tools:context=".FragmentSignIn">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
-        android:layout_margin="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="40dp"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo2"
             android:layout_gravity="center"
-            />
-        <TextView
-            android:layout_marginRight="104dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="Введите Имя:"
-            />
-        <EditText
-            android:id="@+id/EmailSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
-            android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
-            />
-        <TextView
-            android:layout_marginRight="104dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="Введите Имя:"
-            />
-        <EditText
+            android:src="@drawable/logo2" />
 
-            android:id="@+id/PasswordSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
-            android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
-            />
+        <LinearLayout
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="104dp"
+                android:layout_marginBottom="10dp"
+                android:text="Введите Имя:"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/EmailSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/edit_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="104dp"
+                android:layout_marginBottom="10dp"
+                android:text="Введите Имя:"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/PasswordSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/edit_text" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:textColor="@color/white"
                 android:background="@drawable/button_registration"
-                android:text="Log In"/>
+                android:text="Log In"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btn_signin"
@@ -77,10 +87,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:onClick="GetTextFromSQL"
-                android:textColor="@color/white"
                 android:background="@drawable/button_registration"
-                android:text="SignIn" />
+                android:onClick="GetTextFromSQL"
+                android:text="SignIn"
+                android:textColor="@color/white" />
         </LinearLayout>
 
 
