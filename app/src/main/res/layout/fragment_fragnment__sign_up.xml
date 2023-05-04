@@ -7,7 +7,10 @@
     android:background="@drawable/gradient_bg"
     android:id="@+id/fragment_SignIn"
     tools:context=".Fragnment_SignUp">
-
+    <ScrollView
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_gravity="center_vertical"
@@ -16,15 +19,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/logo2" />
+
+            <ImageView
+                android:layout_marginTop="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/logo2" />
         <TextView
             android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
@@ -37,26 +43,11 @@
             android:id="@+id/FirstName"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-
             android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
+            android:background="@drawable/my_edit_text_bg"
+            android:paddingLeft="8dp"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Введите Фамилию"
-            android:textColor="@color/white"
 
-            android:layout_marginBottom="10dp"
-            />
-        <EditText
-            android:id="@+id/SecondName"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-
-            android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
-         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,23 +61,23 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
+            android:background="@drawable/my_edit_text_bg"
+            android:paddingLeft="8dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Введите Ваш пароль"
             android:textColor="@color/white"
-
             android:layout_marginBottom="10dp"
             />
         <EditText
             android:id="@+id/pass1"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-
             android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
+            android:background="@drawable/my_edit_text_bg"
+            android:paddingLeft="8dp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -101,17 +92,22 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/edit_text"
+            android:background="@drawable/my_edit_text_bg"
+            android:paddingLeft="8dp"
+
             />
 
-        <TextView
-            android:layout_gravity="center"
-            android:id="@+id/error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Пароли не совпадают"
-            android:textColor="@color/red"
-            android:visibility="invisible" />
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+
+                    android:textColor="@color/red"
+                    android:visibility="invisible" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -135,5 +131,6 @@
 
 
     </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

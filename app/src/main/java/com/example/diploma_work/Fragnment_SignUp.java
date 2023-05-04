@@ -1,19 +1,23 @@
 package com.example.diploma_work;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import android.content.res.ColorStateList;
 
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -30,13 +34,15 @@ import java.sql.PreparedStatement;
 public class Fragnment_SignUp extends Fragment {
 
     PasswordHasher hesh;
-    EditText Name,SurName,Email,Pass,Pass2;
+    EditText Name,Email,Pass,Pass2;
     TextView Error;
     Button SigIn,Cancel;
 
     Connection connect;
 
     String hashedPassword;
+ //   EditText[] editTextArray;
+
 
     public Fragnment_SignUp() {
        super(R.layout.fragment_fragnment__sign_up);
@@ -51,7 +57,6 @@ public class Fragnment_SignUp extends Fragment {
 
 
         Name = view.findViewById(R.id.FirstName);
-        SurName = view.findViewById(R.id.SecondName);
         Email = view.findViewById(R.id.Email);
         Pass = view.findViewById(R.id.pass1);
         Pass2 = view.findViewById(R.id.pass2);
@@ -60,8 +65,12 @@ public class Fragnment_SignUp extends Fragment {
         Cancel = view.findViewById(R.id.btn_cancel);
         Error = view.findViewById(R.id.error);
 
-
-
+//        editTextArray = new EditText[] {
+//                view.findViewById(R.id.FirstName),
+//                view. findViewById(R.id.Email),
+//                view. findViewById(R.id.pass1),
+//                view. findViewById(R.id.pass2)
+//        };
 
 
         SigIn.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +84,7 @@ public class Fragnment_SignUp extends Fragment {
                     if(isValidEmail(Email.getText().toString())){
                         if(CheckPass(Pass,Pass2))
                         {
+
                             Error.setVisibility(View.GONE);
                             GetTextFromSQL(hashedPassword);
 
@@ -93,10 +103,21 @@ public class Fragnment_SignUp extends Fragment {
                             }, 3000);
 
                         }
+                        else {
+                            Error.setText("Пароли не совпадают");
+                            Error.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else {
+                        Error.setText("Поле Email заполнено неверно");
+                        Error.setVisibility(View.VISIBLE);
                     }
 
 
                 } else {
+                    Error.setText("Заполните все поля");
+
+
                     Error.setVisibility(View.VISIBLE);
                 }
 
@@ -122,12 +143,11 @@ public class Fragnment_SignUp extends Fragment {
             connect = connectionHelper.connectionclass();
             if(connect!=null)
             {
-                String query = "INSERT INTO Users (Name, Surname, UserEmail, UserPassword) VALUES (?, ?, ?, ?)";
+                String query = "INSERT INTO Users (Name, UserEmail, UserPassword) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setString(1, Name.getText().toString());
-                preparedStatement.setString(2, SurName.getText().toString());
-                preparedStatement.setString(3, Email.getText().toString());
-                preparedStatement.setString(4, pass);
+                preparedStatement.setString(2, Email.getText().toString());
+                preparedStatement.setString(3, pass);
                 preparedStatement.executeUpdate();
             }
             else
@@ -170,10 +190,10 @@ public class Fragnment_SignUp extends Fragment {
                 EditText editText = (EditText) view;
                 String text = editText.getText().toString();
                 if (TextUtils.isEmpty(text)) {
-                    editText.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.red)));
+                    editText.setBackgroundResource(R.drawable.my_edit_text_bg_exeption);
                     isAllFieldsFilled = false;
                 } else {
-                    editText.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+                    editText.setBackgroundResource(R.drawable.my_edit_text_bg);
                 }
             }
         }
@@ -196,3 +216,20 @@ public class Fragnment_SignUp extends Fragment {
         return email.matches(emailPattern);
     }
 }
+
+//    public void setEditTextBackgroundOnTouch(EditText[] editTextArray, @DrawableRes int drawableRes) {
+//        for (EditText editText : editTextArray) {
+//            editText.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                        editText.setBackgroundResource(drawableRes);
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+//        }
+//    }
+
+//}

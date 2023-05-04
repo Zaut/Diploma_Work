@@ -40,14 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/edit_text" />
-        </LinearLayout>
+                android:background="@drawable/my_edit_text_bg"
+                android:paddingLeft="8dp" />
 
-        <LinearLayout
-            android:layout_width="218dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,7 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/edit_text" />
+                android:background="@drawable/my_edit_text_bg"
+                android:paddingLeft="8dp" />
         </LinearLayout>
 
 
