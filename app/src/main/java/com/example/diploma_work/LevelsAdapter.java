@@ -1,21 +1,32 @@
 package com.example.diploma_work;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.List;
 
 public class LevelsAdapter extends BaseAdapter {
     private List<Levels> data;
     private LayoutInflater inflater;
+    private FragmentManager fragmentManager;
 
-    public LevelsAdapter(Context context, List<Levels> data) {
+    public LevelsAdapter(FragmentActivity activity, List<Levels> data) {
+        this.fragmentManager = activity.getSupportFragmentManager();
         this.data = data;
-        this.inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(activity);
     }
 
     @Override
@@ -33,6 +44,8 @@ public class LevelsAdapter extends BaseAdapter {
         return position;
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -45,11 +58,25 @@ public class LevelsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         Levels level = data.get(position);
-        holder.button.setText(level.name);
+        // holder.button.setText(level.name);
+        holder.button.setText(String.valueOf(level.name));
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Обработка нажатия на кнопку
+                Levels level = data.get(position);
+
+                // Создаем новый фрагмент для отображения категорий
+                Fragment categoriesFragment = new CategoriesFragment();
+
+                // Передаем информацию о выбранном уровне во фрагмент
+                Bundle args = new Bundle();
+                args.putInt("selectedLevel", level.id);
+                categoriesFragment.setArguments(args);
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.Frame_Layout, categoriesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
         return convertView;
