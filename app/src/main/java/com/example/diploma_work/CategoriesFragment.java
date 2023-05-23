@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class CategoriesFragment extends Fragment {
     Connection connect;
     String ConnectionResult = "";
 
-
+    private FragmentManager fragmentManager;
 
    private  ListView listView;
     private int selectedLevelId;
@@ -40,6 +41,8 @@ public class CategoriesFragment extends Fragment {
         selectedLevelId = getArguments().getInt("selectedLevel");
         listView = view.findViewById(R.id.list_categoriee);
 
+
+        fragmentManager = requireActivity().getSupportFragmentManager();
         return view;
 
 
@@ -50,7 +53,7 @@ public class CategoriesFragment extends Fragment {
 
 
         categories = new GetData().getData(selectedLevelId);
-        adaptercategories = new CategoriesAdapter(getActivity(), categories);
+        adaptercategories = new CategoriesAdapter(requireActivity(), fragmentManager, categories);
         listView.setAdapter(adaptercategories);
     }
 
