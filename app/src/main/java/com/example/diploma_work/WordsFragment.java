@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,22 +22,25 @@ import android.widget.TextView;
 import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.List;
+import java.util.Locale;
 
 
-public class WordsFragment extends Fragment {
+public class WordsFragment extends Fragment implements TextToSpeech.OnInitListener {
 
 
     private List<Words> wordsList;
 
-    TextView engl_word, ukrain_word, transcription, sentence, transSentence;
+    private  TextView engl_word, ukrain_word, transcription, sentence, transSentence;
 
-    Button next_word;
+    private Button next_word, textToSpeechButton;
 
-    EasyFlipView easyFlipView;
+    private  EasyFlipView easyFlipView;
 
-    EditText input_word;
+    private EditText input_word;
 
-    ImageView leftArrow, rightArrow;
+    private  ImageView leftArrow, rightArrow;
+    private TextToSpeech textToSpeech;
+
 
     private String selectedCategories;
     private int currentIndex;
@@ -66,6 +70,11 @@ public class WordsFragment extends Fragment {
         easyFlipView = view.findViewById(R.id.easyFlipView);
          leftArrow = view.findViewById(R.id.leftArrow);
          rightArrow = view.findViewById(R.id.rightArrow);
+        textToSpeechButton = view.findViewById(R.id.textToSpeechButton);
+
+
+        textToSpeech = new TextToSpeech(getActivity(), this);
+
 
         wordsList = new GetData().getWords(selectedCategories);
         currentIndex = 0;
@@ -88,6 +97,7 @@ public class WordsFragment extends Fragment {
                 if(textViewText.equals(editTextText) )
                 {
                     showNextWord();
+
                 }
                 else {
                     next_word.setEnabled(false);
@@ -131,8 +141,40 @@ public class WordsFragment extends Fragment {
         });
 
 
+
+        textToSpeechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = view.findViewById(R.id.engl_word);
+                String text = textView.getText().toString();
+                textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            }
+        });
+
         return view;
     }
+
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.getDefault());
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                // Обработка ошибки недоступности языка
+            }
+        } else {
+            // Обработка ошибки инициализации TextToSpeech
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
