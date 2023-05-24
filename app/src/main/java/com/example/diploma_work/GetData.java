@@ -102,7 +102,12 @@ public class GetData {
                 while (rs.next()) {
                     Words word = new Words();
                     word.Words = rs.getString("Words");
+                    word.TranslateWords = rs.getString("TranslateWords");
+                    word.Sentence = rs.getString("Sentence");
+                    word.Transcriptions = rs.getString("Transcriptions");
+                    word.TransSentence = rs.getString("TransSentence");
                     Log.e("Words",  word.Words );
+                    Log.e("TranslateWords",  word.TranslateWords );
                     words.add(word);
                 }
                 connect.close();

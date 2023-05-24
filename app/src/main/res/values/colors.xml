@@ -12,4 +12,5 @@
     <color name="edit_text">#C2D2E9</color>
     <color name="button">#5E83BA</color>
     <color name="green">#39bd00</color>
+    <color name="card_background">#DCE7F6</color>
 </resources>

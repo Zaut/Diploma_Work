@@ -3,22 +3,196 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_bg"
     tools:context=".WordsFragment">
 
 
-    <TextView
-        android:id="@+id/qwe"
+
+
+    <com.wajahatkarim3.easyflipview.EasyFlipView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
-
-    <ListView
         android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:id="@+id/list_view"
+        app:flipOnTouch="true"
+        app:flipEnabled="true"
+        app:flipDuration="400"
+        app:flipType="horizontal"
+        app:flipFrom="back">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_level"
+                android:orientation="vertical"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp">
+
+                <LinearLayout
+                    android:layout_marginTop="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:orientation="horizontal"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/ukrain_word"
+                            android:text="Brother"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                        <EditText
+                            android:id="@+id/input_word"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="80dp"
+                            android:layout_marginBottom="20dp"
+
+                            android:paddingLeft="8dp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/image_card2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/owlbluelogo"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/transSentence"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="qweqweqwe" />
+                </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_level"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp">
+
+            <LinearLayout
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/engl_word"
+                        android:text="Brother"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:id="@+id/transcription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="qweqweqwe"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/image_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/owlbluelogo"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp">
+                <TextView
+                    android:id="@+id/sentence"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="qweqweqwe" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+    <Button
+       android:id="@+id/next_word"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_registration"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Next"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="25dp"
+        android:textColor="@color/white" />
+<!--    <ListView-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:id="@+id/list_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 
 </FrameLayout>
