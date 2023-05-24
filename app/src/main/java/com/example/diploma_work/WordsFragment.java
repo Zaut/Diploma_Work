@@ -14,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.List;
 
@@ -29,7 +32,11 @@ public class WordsFragment extends Fragment {
 
     Button next_word;
 
+    EasyFlipView easyFlipView;
+
     EditText input_word;
+
+    ImageView leftArrow, rightArrow;
 
     private String selectedCategories;
     private int currentIndex;
@@ -56,7 +63,9 @@ public class WordsFragment extends Fragment {
         transSentence = view.findViewById(R.id.transSentence);
         next_word = view.findViewById(R.id.next_word);
         input_word = view.findViewById(R.id.input_word);
-
+        easyFlipView = view.findViewById(R.id.easyFlipView);
+         leftArrow = view.findViewById(R.id.leftArrow);
+         rightArrow = view.findViewById(R.id.rightArrow);
 
         wordsList = new GetData().getWords(selectedCategories);
         currentIndex = 0;
@@ -106,6 +115,20 @@ public class WordsFragment extends Fragment {
             }
         });
 
+        rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easyFlipView.flipTheView();
+            }
+        });
+
+
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easyFlipView.flipTheView();
+            }
+        });
 
 
         return view;
