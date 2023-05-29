@@ -2,22 +2,30 @@ package com.example.diploma_work;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.content.Context;
+
 
 import com.wajahatkarim3.easyflipview.EasyFlipView;
 
@@ -52,6 +60,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
+
+
         View view = inflater.inflate(R.layout.fragment_words, container, false);
 
         selectedCategories = getArguments().getString("selectedCategories");
@@ -79,6 +91,12 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         wordsList = new GetData().getWords(selectedCategories);
         currentIndex = 0;
 
+
+        // В методе onCreate() или в другом методе инициализации
+        handler.postDelayed(colorUpdateRunnable, 1000); // Запускаем проверку сразу и повторно каждую секунду
+
+
+
         // Отображение первого слова в TextView
         if (wordsList != null && !wordsList.isEmpty()) {
             Words firstWord = wordsList.get(currentIndex);
@@ -92,43 +110,34 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         next_word.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String textViewText = engl_word.getText().toString();
-                String editTextText = input_word.getText().toString();
-                if(textViewText.equals(editTextText) )
-                {
+
+                String textViewText = engl_word.getText().toString().toLowerCase();
+                String editTextText = input_word.getText().toString().toLowerCase();
+
+                if (textViewText.equals(editTextText)) {
                     showNextWord();
-
+                    easyFlipView.flipTheView();
+                    next_word.setVisibility(View.GONE);
+                    input_word.getText().clear();
                 }
-                else {
-                    next_word.setEnabled(false);
-                    next_word.setBackgroundColor(getResources().getColor(R.color.red));
 
 
-                }
+
+
 
             }
         });
 
-        input_word.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String editTextText = input_word.getText().toString();
-                    if (!editTextText.isEmpty()) {
-                        next_word.setEnabled(true);
-                        next_word.setBackgroundResource(R.drawable.button_registration);
-                    }
-                } else {
-                    next_word.setEnabled(false);
-                    next_word.setBackgroundColor(getResources().getColor(R.color.red));
-                }
-            }
-        });
+
+
 
         rightArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 easyFlipView.flipTheView();
+                next_word.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -136,7 +145,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 easyFlipView.flipTheView();
+                next_word.setVisibility(View.GONE);
+
             }
         });
 
@@ -151,14 +163,44 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
             }
         });
 
+
+
         return view;
     }
+
+
+    private Handler handler = new Handler();
+    private Runnable colorUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkAndUpdateNextButton(); // Вызываем метод для проверки и обновления цвета кнопки
+            handler.postDelayed(this, 1000); // Повторно запускаем проверку через 1 секунду
+        }
+    };
+
+
+
+    private boolean checkAndUpdateNextButton() {
+        String textViewText = engl_word.getText().toString().toLowerCase();
+        String editTextText = input_word.getText().toString().toLowerCase();
+
+        if (textViewText.equals(editTextText)) {
+            next_word.setEnabled(true);
+            next_word.setBackgroundResource(R.drawable.button_registration);
+            return true;
+        } else {
+            next_word.setEnabled(false);
+            next_word.setBackgroundResource(R.drawable.button_unavailable);
+            return false;
+        }
+    }
+
 
 
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
-            int result = textToSpeech.setLanguage(Locale.getDefault());
+            int result = textToSpeech.setLanguage(Locale.ENGLISH);
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 // Обработка ошибки недоступности языка
             }
