@@ -17,5 +17,12 @@ public class Words {
 
     String TransSentence;
 
+    private int currentWordId = 0;
+
+
+    public int getId()
+    {
+        return Id;
+    }
 
 }

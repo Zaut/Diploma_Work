@@ -1,8 +1,11 @@
 package com.example.diploma_work;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -21,10 +24,12 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Context;
+import android.widget.Toast;
 
 
 import com.wajahatkarim3.easyflipview.EasyFlipView;
@@ -46,6 +51,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
     private EditText input_word;
 
+    private ImageButton cancelButton;
+
     private  ImageView leftArrow, rightArrow;
     private TextToSpeech textToSpeech;
 
@@ -53,6 +60,11 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     private String selectedCategories;
     private int currentIndex;
 
+    private Button  ok_btn;
+
+    private int currentWordId;
+
+    private AlertDialog dialog;
 
 
 
@@ -85,6 +97,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         textToSpeechButton = view.findViewById(R.id.textToSpeechButton);
 
 
+
         textToSpeech = new TextToSpeech(getActivity(), this);
 
 
@@ -92,8 +105,24 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         currentIndex = 0;
 
 
-        // В методе onCreate() или в другом методе инициализации
-        handler.postDelayed(colorUpdateRunnable, 1000); // Запускаем проверку сразу и повторно каждую секунду
+
+        handler.postDelayed(colorUpdateRunnable, 1000);
+
+
+
+        View alertCustomDialog = LayoutInflater.from(requireContext()).inflate(R.layout.customdialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
+        alertDialogBuilder.setView(alertCustomDialog);
+        dialog = alertDialogBuilder.create();
+
+
+       // cancelButton =(ImageButton) alertCustomDialog.findViewById(R.id.cancelID);
+        ok_btn = alertCustomDialog.findViewById(R.id.ok_btn);
+
+
+
+
+
 
 
 
@@ -129,6 +158,27 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         });
 
 
+        ok_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.cancel();
+                Toast.makeText(requireContext(), "Thanks for watching", Toast.LENGTH_SHORT).show();
+
+
+                Fragment newFragment = new CategoriesFragment();
+
+                // Получаем FragmentManager из активности
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+
+                // Выполняем операцию замены текущего фрагмента на новый фрагмент
+                fragmentManager.beginTransaction()
+                        .replace(R.id.Frame_Layout, newFragment) // замените R.id.fragment_container на ID вашего контейнера фрагментов
+                        .commit();
+
+            }
+        });
 
 
         rightArrow.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +223,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     private Runnable colorUpdateRunnable = new Runnable() {
         @Override
         public void run() {
-            checkAndUpdateNextButton(); // Вызываем метод для проверки и обновления цвета кнопки
-            handler.postDelayed(this, 1000); // Повторно запускаем проверку через 1 секунду
+            checkAndUpdateNextButton();
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -225,6 +275,9 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
     }
 
+    private void saveWordId(int wordId) {
+        currentWordId = wordId;
+    }
 
     private void showNextWord() {
         if (wordsList != null && !wordsList.isEmpty()) {
@@ -236,9 +289,23 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                 transcription.setText(nextWord.Transcriptions);
                 sentence.setText(nextWord.Sentence);
                 transSentence.setText(nextWord.TransSentence);
+//                int wordId = nextWord.getId();
+//                // Сохраняем id слова в переменную для использования из других частей приложения
+//                saveWordId(wordId);
             } else {
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+//                Words lastWord = wordsList.get(wordsList.size() - 1);
+//                int lastWordId = lastWord.getId();
+//                // Сохраняем id последнего слова в переменную для использования из других частей приложения
+//                saveWordId(lastWordId);
+//                Log.e("currentIndex", currentIndex + ": ");
+
+
                 // Все слова просмотрены
                 // Можно выполнить дополнительные действия или вернуться к началу списка
+
             }
         }
     }

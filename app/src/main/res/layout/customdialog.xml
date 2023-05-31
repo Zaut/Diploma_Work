@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_bg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:layout_marginTop="30dp">
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/cancelID"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="right|top"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:src="@drawable/close"-->
+<!--                android:background="@android:color/transparent"/>-->
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Alert"
+                android:layout_marginLeft="20dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="You are butiful"
+                android:textSize="20sp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/ok_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="OK"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_registration"/>
+        </LinearLayout>
+
+</RelativeLayout>
