@@ -1,34 +1,26 @@
 package com.example.diploma_work;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.content.Context;
 import android.widget.Toast;
 
 
@@ -53,7 +45,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
     private ImageButton cancelButton;
 
-    private  ImageView leftArrow, rightArrow;
+
+    private  ImageView leftArrow, rightArrow, image_card;
     private TextToSpeech textToSpeech;
 
 
@@ -82,6 +75,15 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         Log.e("selectedCategories", selectedCategories + ": ");
 
 
+//        GetData getData = new GetData();
+//        List<Words> wordL = getData.getWords(String.valueOf(currentIndex));
+//        for (Words word : wordL) {
+//            Log.e("Image", word.Image);
+//            Log.e("Separator", "----------------------");
+//        }
+
+
+
 
 
         engl_word = view.findViewById(R.id.engl_word);
@@ -95,6 +97,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
          leftArrow = view.findViewById(R.id.leftArrow);
          rightArrow = view.findViewById(R.id.rightArrow);
         textToSpeechButton = view.findViewById(R.id.textToSpeechButton);
+        image_card = view.findViewById(R.id.image_card);
 
 
 
@@ -134,6 +137,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
             transcription.setText(firstWord.Transcriptions);
             sentence.setText(firstWord.Sentence);
             transSentence.setText(firstWord.TransSentence);
+            SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
+
+
+
         }
 
         next_word.setOnClickListener(new View.OnClickListener() {
@@ -289,22 +296,18 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                 transcription.setText(nextWord.Transcriptions);
                 sentence.setText(nextWord.Sentence);
                 transSentence.setText(nextWord.TransSentence);
-//                int wordId = nextWord.getId();
-//                // Сохраняем id слова в переменную для использования из других частей приложения
-//                saveWordId(wordId);
+                SVGConverter.displaySVGImage(nextWord.getImage(), image_card);
+//
             } else {
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
-//                Words lastWord = wordsList.get(wordsList.size() - 1);
-//                int lastWordId = lastWord.getId();
-//                // Сохраняем id последнего слова в переменную для использования из других частей приложения
-//                saveWordId(lastWordId);
-//                Log.e("currentIndex", currentIndex + ": ");
-
+//
 
                 // Все слова просмотрены
                 // Можно выполнить дополнительные действия или вернуться к началу списка
+                GlobalVariables.listSucces.add(selectedCategories);
+
 
             }
         }

@@ -21,6 +21,10 @@ public class CategoriesAdapter extends BaseAdapter {
 
     private FragmentManager fragmentManager;
 
+    private String name;
+
+
+
     public CategoriesAdapter(Context context, FragmentManager fragmentManager, List<Categories> data) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);
@@ -46,6 +50,7 @@ public class CategoriesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
+
             convertView = inflater.inflate(R.layout.categories_list, parent, false);
             holder = new ViewHolder();
             holder.button = convertView.findViewById(R.id.btn_categories_list_item);
@@ -56,6 +61,16 @@ public class CategoriesAdapter extends BaseAdapter {
 
         Categories category = data.get(position);
         holder.button.setText(category.CategoriesName);
+
+        if (GlobalVariables.listSucces.contains(category.CategoriesName)) {
+
+            holder.button.setBackgroundResource(R.drawable.button_succes);
+
+        } else {
+
+            holder.button.setBackgroundResource(R.drawable.button_level);
+
+        }
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,4 +96,12 @@ public class CategoriesAdapter extends BaseAdapter {
     private static class ViewHolder {
         Button button;
     }
+
+    private void iterateList() {
+        for (String element : GlobalVariables.listSucces)
+        {
+
+        }
+    }
+
 }

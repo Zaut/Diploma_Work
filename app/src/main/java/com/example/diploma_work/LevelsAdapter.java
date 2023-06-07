@@ -69,9 +69,12 @@ public class LevelsAdapter extends BaseAdapter {
                 Fragment categoriesFragment = new CategoriesFragment();
 
                 // Передаем информацию о выбранном уровне во фрагмент
-                Bundle args = new Bundle();
-                args.putInt("selectedLevel", level.id);
-                categoriesFragment.setArguments(args);
+//                Bundle args = new Bundle();
+//                args.putInt("selectedLevel", level.id);
+//
+//                categoriesFragment.setArguments(args);
+
+                GlobalVariables.globalSelectedLevel = level.id;
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.Frame_Layout, categoriesFragment);

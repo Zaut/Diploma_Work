@@ -17,6 +17,8 @@ public class Words {
 
     String TransSentence;
 
+    byte[] Picture;
+
     private int currentWordId = 0;
 
 
@@ -24,5 +26,7 @@ public class Words {
     {
         return Id;
     }
-
+    public byte[] getImage() {
+        return Picture;
+    }
 }

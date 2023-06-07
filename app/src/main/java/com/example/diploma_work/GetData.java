@@ -2,11 +2,13 @@ package com.example.diploma_work;
 
 import android.util.Log;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GetData {
@@ -21,14 +23,14 @@ public class GetData {
         try
         {
             ConnectionHelper conStr=new ConnectionHelper();
-            connect =conStr.connectionclass();        // Connect to database
+            connect =conStr.connectionclass();
             if (connect == null)
             {
                 ConnectionResult = "Check Your Internet Access!";
             }
             else
             {
-                // Change below query according to your own database.
+
                 String query = "select * from Levels  ORDER BY Id ASC";
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
@@ -52,6 +54,49 @@ public class GetData {
         }
 
         return data;
+    }
+
+
+    public List<Users> getUsers() {
+
+        List<Users> user = null;
+        user = new ArrayList<Users>();
+        try
+        {
+            ConnectionHelper conStr=new ConnectionHelper();
+            connect =conStr.connectionclass();
+            if (connect == null)
+            {
+                ConnectionResult = "Check Your Internet Access!";
+            }
+            else
+            {
+
+                String query = "select * from Users ";
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()){
+                    Users users =new Users();
+                    users.id = rs.getInt("Id");
+                    users.Name =rs.getString("Name");
+                    users.Email =rs.getString("Email");
+                    users.Password =rs.getString("Password");
+                    user.add(users);
+                }
+
+
+                ConnectionResult = " successful";
+                isSuccess=true;
+                connect.close();
+            }
+        }
+        catch (Exception ex)
+        {
+            isSuccess = false;
+            ConnectionResult = ex.getMessage();
+        }
+
+        return user;
     }
 
 
@@ -106,8 +151,12 @@ public class GetData {
                     word.Sentence = rs.getString("Sentence");
                     word.Transcriptions = rs.getString("Transcriptions");
                     word.TransSentence = rs.getString("TransSentence");
+                    byte[] imageBytes = rs.getBytes("Picture");
+                    word.Picture = imageBytes;
+
                     Log.e("Words",  word.Words );
                     Log.e("TranslateWords",  word.TranslateWords );
+                    Log.e("TranslateWords", Arrays.toString(word.Picture));
                     words.add(word);
                 }
                 connect.close();

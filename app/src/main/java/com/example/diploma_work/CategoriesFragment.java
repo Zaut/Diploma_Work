@@ -38,7 +38,8 @@ public class CategoriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
-        selectedLevelId = getArguments().getInt("selectedLevel");
+        //selectedLevelId = getArguments().getInt("selectedLevel");
+        selectedLevelId = GlobalVariables.globalSelectedLevel;
         listView = view.findViewById(R.id.list_categoriee);
 
 

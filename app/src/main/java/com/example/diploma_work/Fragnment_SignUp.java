@@ -143,7 +143,7 @@ public class Fragnment_SignUp extends Fragment {
             connect = connectionHelper.connectionclass();
             if(connect!=null)
             {
-                String query = "INSERT INTO Users (Name, UserEmail, UserPassword) VALUES (?, ?, ?)";
+                String query = "INSERT INTO Users (Name, Email, Password) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setString(1, Name.getText().toString());
                 preparedStatement.setString(2, Email.getText().toString());
