@@ -141,7 +141,7 @@ public class GetData {
             } else {
                 Log.e("selectedCategories", selectedCategories + ": ");
 //                String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
-                String query = "SELECT * FROM " + selectedCategories;
+                String query = "SELECT * FROM " + selectedCategories + " WHERE is_completed = " + 0;
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
@@ -151,12 +151,14 @@ public class GetData {
                     word.Sentence = rs.getString("Sentence");
                     word.Transcriptions = rs.getString("Transcriptions");
                     word.TransSentence = rs.getString("TransSentence");
-                    byte[] imageBytes = rs.getBytes("Picture");
-                    word.Picture = imageBytes;
+                    word.Completed = rs.getInt("is_completed");
+                //   byte[] imageBytes = rs.getBytes("Picture");
+                //    word.Picture = imageBytes;
 
                     Log.e("Words",  word.Words );
                     Log.e("TranslateWords",  word.TranslateWords );
                     Log.e("TranslateWords", Arrays.toString(word.Picture));
+                    Log.e("Completed", String.valueOf(word.Completed));
                     words.add(word);
                 }
                 connect.close();

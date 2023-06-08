@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.wajahatkarim3.easyflipview.EasyFlipView;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +36,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
 
     private List<Words> wordsList;
+
+    ConnectionHelper connect;
 
     private  TextView engl_word, ukrain_word, transcription, sentence, transSentence;
 
@@ -125,19 +129,23 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
 
 
-
+        ConnectionHelper connectionHelper = new ConnectionHelper();
 
 
 
         // Отображение первого слова в TextView
         if (wordsList != null && !wordsList.isEmpty()) {
+
             Words firstWord = wordsList.get(currentIndex);
+            Log.e("currentIndex", currentIndex+ ": ");
+            Log.e("firstWord", firstWord.Id + ": ");
             engl_word.setText(firstWord.Words);
             ukrain_word.setText(firstWord.TranslateWords);
             transcription.setText(firstWord.Transcriptions);
             sentence.setText(firstWord.Sentence);
             transSentence.setText(firstWord.TransSentence);
-            SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
+          //  SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
+
 
 
 
@@ -287,6 +295,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     }
 
     private void showNextWord() {
+        ConnectionHelper connectionHelper = new ConnectionHelper();
         if (wordsList != null && !wordsList.isEmpty()) {
             currentIndex++;
             if (currentIndex < wordsList.size()) {
@@ -296,8 +305,18 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                 transcription.setText(nextWord.Transcriptions);
                 sentence.setText(nextWord.Sentence);
                 transSentence.setText(nextWord.TransSentence);
-                SVGConverter.displaySVGImage(nextWord.getImage(), image_card);
+             //   SVGConverter.displaySVGImage(nextWord.getImage(), image_card);
 //
+
+
+                if (currentIndex >= 0) {
+                    Words previousWord = wordsList.get(currentIndex -1);
+                    Log.e("currentIndex", currentIndex + ": ");
+                    previousWord.setCompleted(1);
+                    Log.e("previousWord", previousWord.Completed + ": ");
+                    connectionHelper.updateWordCompletionStatus(previousWord.Words, previousWord.getCompleted(), selectedCategories);
+                }
+
             } else {
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

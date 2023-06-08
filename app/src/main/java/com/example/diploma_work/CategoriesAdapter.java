@@ -1,6 +1,8 @@
 package com.example.diploma_work;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +76,7 @@ public class CategoriesAdapter extends BaseAdapter {
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Categories category = data.get(position);
 
                 // Создаем новый фрагмент для отображения категорий
