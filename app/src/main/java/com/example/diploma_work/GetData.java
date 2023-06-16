@@ -56,6 +56,31 @@ public class GetData {
         return data;
     }
 
+    public boolean checkCategoriesReferences(int levelId) {
+        boolean allReferencesExist = true;
+        try {
+            ConnectionHelper conStr = new ConnectionHelper();
+            connect = conStr.connectionclass();
+            if (connect == null) {
+                ConnectionResult = "Check Your Internet Access!";
+                return false;
+            } else {
+                String query = "SELECT Categories.LevelsId FROM Categories LEFT JOIN Levels ON Categories.LevelsId = Levels.Id WHERE Levels.Id = ?";
+                PreparedStatement stmt = connect.prepareStatement(query);
+                stmt.setInt(1, levelId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    allReferencesExist = false;
+                }
+                connect.close();
+            }
+        } catch (Exception ex) {
+            ConnectionResult = ex.getMessage();
+            return false;
+        }
+        return allReferencesExist;
+    }
+
 
     public List<Users> getUsers() {
 

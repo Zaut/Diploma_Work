@@ -4,6 +4,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,13 @@ public class LevelsAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private FragmentManager fragmentManager;
 
+    private GetData getData;
+
     public LevelsAdapter(FragmentActivity activity, List<Levels> data) {
         this.fragmentManager = activity.getSupportFragmentManager();
         this.data = data;
         this.inflater = LayoutInflater.from(activity);
+        this.getData = new GetData();
     }
 
     @Override
@@ -46,7 +50,6 @@ public class LevelsAdapter extends BaseAdapter {
 
 
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
@@ -58,28 +61,37 @@ public class LevelsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         Levels level = data.get(position);
-        // holder.button.setText(level.name);
         holder.button.setText(String.valueOf(level.name));
+
+        // Проверяем ссылку перед выполнением операций для текущего уровня
+        boolean referencesExist = getData.checkCategoriesReferences(level.id);
+        if (!referencesExist) {
+            // Если ссылка существует, делаем кнопку активной и возвращаем ее изначальный цвет
+            holder.button.setEnabled(true);
+            holder.button.setBackgroundResource(R.drawable.button_registration);
+        } else {
+            // Если ссылки не существует, делаем кнопку неактивной и меняем ее цвет
+            holder.button.setEnabled(false);
+            holder.button.setBackgroundColor(Color.GRAY);
+        }
+
+        final boolean finalReferencesExist = referencesExist;
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Levels level = data.get(position);
+                if (!finalReferencesExist) {
+                    Levels level = data.get(position);
+                    Fragment categoriesFragment = new CategoriesFragment();
+                    GlobalVariables.globalSelectedLevel = level.id;
 
-                // Создаем новый фрагмент для отображения категорий
-                Fragment categoriesFragment = new CategoriesFragment();
-
-                // Передаем информацию о выбранном уровне во фрагмент
-//                Bundle args = new Bundle();
-//                args.putInt("selectedLevel", level.id);
-//
-//                categoriesFragment.setArguments(args);
-
-                GlobalVariables.globalSelectedLevel = level.id;
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.Frame_Layout, categoriesFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.Frame_Layout, categoriesFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    // Обработка случая, когда ссылки не существуют
+                    // ...
+                }
             }
         });
         return convertView;
