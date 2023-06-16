@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:fontFamily="@font/marion_regular"
-                        android:textSize="@dimen/_25ssp"
+                        android:textSize="@dimen/_20ssp"
                         android:gravity="center"
                         />
 

@@ -22,7 +22,7 @@
             android:src="@drawable/logo2_2" />
 
         <LinearLayout
-            android:layout_width="218dp"
+            android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -30,8 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="104dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="Введите Почту:"
                 android:textColor="@color/white" />
 
@@ -47,8 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="104dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="Введите Пароль:"
                 android:textColor="@color/white" />
 

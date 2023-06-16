@@ -82,6 +82,32 @@ public class GetData {
     }
 
 
+    public List<Integer> getAllLevelIds() {
+        List<Integer> levelIds = new ArrayList<>();
+        try {
+            ConnectionHelper conStr = new ConnectionHelper();
+            connect = conStr.connectionclass();
+            if (connect == null) {
+                ConnectionResult = "Check Your Internet Access!";
+            } else {
+                String query = "SELECT Id FROM Levels";
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    int levelId = rs.getInt("Id");
+                    levelIds.add(levelId);
+                }
+                ConnectionResult = " successful";
+                isSuccess = true;
+                connect.close();
+            }
+        } catch (Exception ex) {
+            isSuccess = false;
+            ConnectionResult = ex.getMessage();
+        }
+        return levelIds;
+    }
+
     public List<Users> getUsers() {
 
         List<Users> user = null;

@@ -17,6 +17,17 @@ public class GlobalVariables {
 
     public static List<String> listSucces = new ArrayList<>();
 
+    public static  List<Levels> groups = new ArrayList<>();
+
+    public static void addGroup(Levels level) {
+        groups.add(level);
+    }
+
+    public static List<Levels> getGroups() {
+        return groups;
+    }
+
+
     private static final String PREF_SELECTED_LEVEL = "pref_selected_level";
     private static final String PREF_LOGIN = "pref_login";
     private static final String PREF_LIST_SUCCESS = "pref_list_success";

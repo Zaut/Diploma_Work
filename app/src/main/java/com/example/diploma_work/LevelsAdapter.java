@@ -2,6 +2,8 @@ package com.example.diploma_work;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import static com.example.diploma_work.GlobalVariables.groups;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LevelsAdapter extends BaseAdapter {
     private List<Levels> data;
@@ -63,23 +66,29 @@ public class LevelsAdapter extends BaseAdapter {
         Levels level = data.get(position);
         holder.button.setText(String.valueOf(level.name));
 
-        // Проверяем ссылку перед выполнением операций для текущего уровня
-        boolean referencesExist = getData.checkCategoriesReferences(level.id);
-        if (!referencesExist) {
-            // Если ссылка существует, делаем кнопку активной и возвращаем ее изначальный цвет
-            holder.button.setEnabled(true);
-            holder.button.setBackgroundResource(R.drawable.button_registration);
-        } else {
-            // Если ссылки не существует, делаем кнопку неактивной и меняем ее цвет
-            holder.button.setEnabled(false);
-            holder.button.setBackgroundColor(Color.GRAY);
+        final AtomicBoolean hasMatch = new AtomicBoolean(false);
+        for (Levels item : groups) {
+            if (item.id == level.id) {
+                hasMatch.set(true);
+                break;
+            }
         }
 
-        final boolean finalReferencesExist = referencesExist;
+        if (hasMatch.get()) {
+            holder.button.setEnabled(false);
+            holder.button.setBackgroundResource(R.drawable.inactive_button);
+            holder.button.setTextColor(Color.WHITE);
+
+        } else {
+            holder.button.setEnabled(true);
+            holder.button.setBackgroundResource(R.drawable.button_level);
+            holder.button.setTextColor(Color.BLACK);
+        }
+
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!finalReferencesExist) {
+                if (!hasMatch.get()) {
                     Levels level = data.get(position);
                     Fragment categoriesFragment = new CategoriesFragment();
                     GlobalVariables.globalSelectedLevel = level.id;

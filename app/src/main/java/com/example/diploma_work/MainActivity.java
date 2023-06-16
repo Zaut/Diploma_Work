@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
 
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
 
 //        FragmentRegistration fragmentRegistration = new FragmentRegistration();
 //        FragmentManager fragmentManager = getSupportFragmentManager();
@@ -35,5 +41,24 @@ public class MainActivity extends AppCompatActivity  {
         ft.replace(R.id.Frame_Layout, fragmentSignIn);
         ft.commit();
 
+    }
+    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            GetData dataGetter = new GetData();
+            List<Integer> levelIds = dataGetter.getAllLevelIds();
+
+            for (int levelId : levelIds) {
+                boolean referencesExist = dataGetter.checkCategoriesReferences(levelId);
+                if (referencesExist) {
+                    Levels level = new Levels();
+                    level.id = levelId;
+                    GlobalVariables.addGroup(level);
+                    Log.d("MyTag", "Added level with id: " + levelId);
+                }
+            }
+
+            return null;
+        }
     }
 }

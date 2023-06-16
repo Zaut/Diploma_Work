@@ -15,4 +15,5 @@
     <color name="card_background">#DCE7F6</color>
     <color name="circle_true">#091D36</color>
     <color name="circle_false">#5E83BA</color>
+    <color name="grey">#474747</color>
 </resources>
