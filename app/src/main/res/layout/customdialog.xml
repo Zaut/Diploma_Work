@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Alert"
+                android:text="Успех!"
                 android:layout_marginLeft="20dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="You are butiful"
+                android:text="Поздравляю с полным прохождением категории!"
                 android:textSize="20sp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"/>

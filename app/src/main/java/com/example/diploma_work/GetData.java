@@ -140,20 +140,64 @@ public class GetData {
                 ConnectionResult = "Check Your Internet Access!";
             } else {
                 Log.e("selectedCategories", selectedCategories + ": ");
-//                String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
-                String query = "SELECT * FROM " + selectedCategories + " WHERE is_completed = " + 0;
+               //String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
+               String query = "SELECT * FROM " + selectedCategories + " WHERE Is_completed = " + 0;
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
                     Words word = new Words();
+                    word.CategoryName = rs.getString("CategoryName");
                     word.Words = rs.getString("Words");
                     word.TranslateWords = rs.getString("TranslateWords");
                     word.Sentence = rs.getString("Sentence");
                     word.Transcriptions = rs.getString("Transcriptions");
                     word.TransSentence = rs.getString("TransSentence");
-                    word.Completed = rs.getInt("is_completed");
-                //   byte[] imageBytes = rs.getBytes("Picture");
-                //    word.Picture = imageBytes;
+                    word.Completed = rs.getInt("Is_completed");
+                    byte[] imageBytes = rs.getBytes("Picture");
+                    word.Picture = imageBytes;
+
+                    Log.e("Words",  word.Words );
+                    Log.e("TranslateWords",  word.TranslateWords );
+                    Log.e("TranslateWords", Arrays.toString(word.Picture));
+                    Log.e("Completed", String.valueOf(word.Completed));
+                    words.add(word);
+                }
+                connect.close();
+            }
+        } catch (Exception ex) {
+            Log.e("GetData", "Error getting categories: " + ex.getMessage());
+            isSuccess = false;
+            ConnectionResult = ex.getMessage();
+            words = null;
+        }
+        return words;
+    }
+
+    public  List<Words> createNullWords(String selectedCategories) {
+        List<Words> words = null;
+        words = new ArrayList<Words>();
+        try {
+            ConnectionHelper conStr=new ConnectionHelper();
+            connect =conStr.connectionclass();
+            if (connect == null) {
+                ConnectionResult = "Check Your Internet Access!";
+            } else {
+                Log.e("selectedCategories", selectedCategories + ": ");
+//                String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
+                String query = "SELECT * FROM " + selectedCategories;
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    Words word = new Words();
+                    word.CategoryName = rs.getString("CategoryName");
+                    word.Words = rs.getString("Words");
+                    word.TranslateWords = rs.getString("TranslateWords");
+                    word.Sentence = rs.getString("Sentence");
+                    word.Transcriptions = rs.getString("Transcriptions");
+                    word.TransSentence = rs.getString("TransSentence");
+                    word.Completed = rs.getInt("Is_completed");
+                       byte[] imageBytes = rs.getBytes("Picture");
+                       word.Picture = imageBytes;
 
                     Log.e("Words",  word.Words );
                     Log.e("TranslateWords",  word.TranslateWords );

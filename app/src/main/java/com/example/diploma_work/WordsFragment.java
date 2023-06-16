@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -50,9 +51,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     private ImageButton cancelButton;
 
 
-    private  ImageView leftArrow, rightArrow, image_card;
+    private  ImageView leftArrow, rightArrow, image_card, image_card2;
     private TextToSpeech textToSpeech;
 
+    private ImageButton button1,button2,button3;
 
     private String selectedCategories;
     private int currentIndex;
@@ -102,6 +104,12 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
          rightArrow = view.findViewById(R.id.rightArrow);
         textToSpeechButton = view.findViewById(R.id.textToSpeechButton);
         image_card = view.findViewById(R.id.image_card);
+        image_card2 = view.findViewById(R.id.image_card2);
+        button1 = view.findViewById(R.id.button1);
+        button2 = view.findViewById(R.id.button2);
+        button3 = view.findViewById(R.id.button3);
+
+
 
 
 
@@ -126,6 +134,17 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
        // cancelButton =(ImageButton) alertCustomDialog.findViewById(R.id.cancelID);
         ok_btn = alertCustomDialog.findViewById(R.id.ok_btn);
 
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragmentLevel = new Fragment_level();
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.Frame_Layout, fragmentLevel);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
 
 
@@ -144,7 +163,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
             transcription.setText(firstWord.Transcriptions);
             sentence.setText(firstWord.Sentence);
             transSentence.setText(firstWord.TransSentence);
-          //  SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
+            SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
+            SVGConverter.displaySVGImage(firstWord.getImage(), image_card2);
 
 
 
@@ -179,17 +199,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
             public void onClick(View v)
             {
                 dialog.cancel();
-                Toast.makeText(requireContext(), "Thanks for watching", Toast.LENGTH_SHORT).show();
-
-
                 Fragment newFragment = new CategoriesFragment();
-
-                // Получаем FragmentManager из активности
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-
-                // Выполняем операцию замены текущего фрагмента на новый фрагмент
                 fragmentManager.beginTransaction()
-                        .replace(R.id.Frame_Layout, newFragment) // замените R.id.fragment_container на ID вашего контейнера фрагментов
+                        .replace(R.id.Frame_Layout, newFragment)
                         .commit();
 
             }
@@ -305,7 +318,8 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                 transcription.setText(nextWord.Transcriptions);
                 sentence.setText(nextWord.Sentence);
                 transSentence.setText(nextWord.TransSentence);
-             //   SVGConverter.displaySVGImage(nextWord.getImage(), image_card);
+                SVGConverter.displaySVGImage(nextWord.getImage(), image_card);
+                SVGConverter.displaySVGImage(nextWord.getImage(), image_card2);
 //
 
 
@@ -316,6 +330,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                     Log.e("previousWord", previousWord.Completed + ": ");
                     connectionHelper.updateWordCompletionStatus(previousWord.Words, previousWord.getCompleted(), selectedCategories);
                 }
+                GlobalVariables.saveState(getContext());
 
             } else {
 
@@ -326,7 +341,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                 // Все слова просмотрены
                 // Можно выполнить дополнительные действия или вернуться к началу списка
                 GlobalVariables.listSucces.add(selectedCategories);
-
+                GlobalVariables.saveState(getContext());
 
             }
         }

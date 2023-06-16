@@ -15,20 +15,20 @@ public class ConnectionHelper {
 
     @SuppressLint("NewApi")
     public Connection connectionclass() {
-        // Local DB
-        ip = "192.168.50.6";
-        db = "DiplomaWork";
-        DBUserNameStr = "Diploma";
-        DBPasswordStr = "qwe123";
+//        // Local DB
+//        ip = "192.168.50.6";
+//        db = "DiplomaWork";
+//        DBUserNameStr = "Diploma";
+//        DBPasswordStr = "qwe123";
 
 
 //       //SMARTER ASP
         //"Data Source=SQL5110.site4now.net;Initial Catalog=db_a9a0f7_diplomawork;User Id=db_a9a0f7_diplomawork_admin;Password=uchiha322
 
-//        ip = "SQL5110.site4now.net";
-//        db = "db_a9a0f7_diplomawork";
-//        DBUserNameStr = "db_a9a0f7_diplomawork_admin";
-//        DBPasswordStr = "uchiha322";
+        ip = "SQL5110.site4now.net";
+        db = "db_a9a0f7_diplomawork";
+        DBUserNameStr = "db_a9a0f7_diplomawork_admin";
+        DBPasswordStr = "uchiha322";
 
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

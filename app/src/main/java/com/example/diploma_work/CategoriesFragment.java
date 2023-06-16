@@ -5,11 +5,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +29,9 @@ public class CategoriesFragment extends Fragment {
     private List<Categories> categories;
 
 
+    private ImageButton button1,button2,button3;
 
-    Connection connect;
-    String ConnectionResult = "";
+
 
     private FragmentManager fragmentManager;
 
@@ -41,9 +44,28 @@ public class CategoriesFragment extends Fragment {
         //selectedLevelId = getArguments().getInt("selectedLevel");
         selectedLevelId = GlobalVariables.globalSelectedLevel;
         listView = view.findViewById(R.id.list_categoriee);
+        button1 = view.findViewById(R.id.button1);
+        button2 = view.findViewById(R.id.button2);
+        button3 = view.findViewById(R.id.button3);
 
 
         fragmentManager = requireActivity().getSupportFragmentManager();
+
+
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragmentLevel = new Fragment_level();
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.Frame_Layout, fragmentLevel);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+
         return view;
 
 

@@ -3,7 +3,9 @@ package com.example.diploma_work;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +27,10 @@ public class CategoriesAdapter extends BaseAdapter {
 
     private String name;
 
-
+    private Context context;
 
     public CategoriesAdapter(Context context, FragmentManager fragmentManager, List<Categories> data) {
+        this.context = context;
         this.data = data;
         this.inflater = LayoutInflater.from(context);
         this.fragmentManager = fragmentManager;
@@ -77,12 +80,51 @@ public class CategoriesAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                Categories category = data.get(position);
 
-                // Создаем новый фрагмент для отображения категорий
+
+                String selectedCategory = category.CategoriesName;
+                if (GlobalVariables.listSucces.contains(selectedCategory)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Начать сначала");
+                    builder.setMessage("Хотите начать сначала?");
+                    builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ConnectionHelper connectionHelper = new ConnectionHelper();
+                            GetData getData = new GetData();
+                            List<Words> words = getData.createNullWords(category.CategoriesName);
+
+                            for (Words word : words) {
+                                Log.e("word.CategoryName", word.CategoryName + ": ");
+                                word.setCompleted(0);
+                                connectionHelper.updateWordCompletionStatus(word.Words, word.getCompleted(), selectedCategory);
+                                GlobalVariables.listSucces.remove(selectedCategory);
+
+                            }
+                            Categories category = data.get(position);
+                            Fragment wordsFragment = new WordsFragment();
+                            Bundle args = new Bundle();
+                            args.putString("selectedCategories", category.CategoriesName);
+                            wordsFragment.setArguments(args);
+
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.Frame_Layout, wordsFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+
+
+                        }
+                    });
+                    builder.setNegativeButton("Нет", null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else{
+                    Categories category = data.get(position);
+
+
                 Fragment wordsFragment = new WordsFragment();
-
-                // Передаем информацию о выбранном уровне во фрагмент
                 Bundle args = new Bundle();
                 args.putString("selectedCategories", category.CategoriesName);
                 wordsFragment.setArguments(args);
@@ -91,8 +133,26 @@ public class CategoriesAdapter extends BaseAdapter {
                 fragmentTransaction.replace(R.id.Frame_Layout, wordsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                }
             }
+
         });
+//                Categories category = data.get(position);
+//
+//                // Создаем новый фрагмент для отображения категорий
+//                Fragment wordsFragment = new WordsFragment();
+//
+//                // Передаем информацию о выбранном уровне во фрагмент
+//                Bundle args = new Bundle();
+//                args.putString("selectedCategories", category.CategoriesName);
+//                wordsFragment.setArguments(args);
+//
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.Frame_Layout, wordsFragment);
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
+//            }
+//        });
         return convertView;
     }
 
