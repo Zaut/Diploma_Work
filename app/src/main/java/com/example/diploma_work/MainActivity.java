@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +42,26 @@ public class MainActivity extends AppCompatActivity  {
         ft.replace(R.id.Frame_Layout, fragmentSignIn);
         ft.commit();
 
+
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this); // Передайте контекст активности
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        JsonBuilder jsonBuilder = new JsonBuilder();
+        String jsonStr = jsonBuilder.buildJsonFromDatabase();
+
+        // Вывод JSON-строки в Logcat
+        int maxLength = 4000;
+        for (int i = 0; i < jsonStr.length(); i += maxLength) {
+            int endIndex = Math.min(i + maxLength, jsonStr.length());
+            String part = jsonStr.substring(i, endIndex);
+            Log.d("JSON", part);
+        }
+        // dbHelper.deleteDatabase(this);
+        dbHelper.createTables(db, jsonStr);
     }
+
+
     private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {

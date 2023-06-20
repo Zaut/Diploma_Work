@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
 
 
+    implementation 'androidx.sqlite:sqlite:2.1.0'
+
 
 
 

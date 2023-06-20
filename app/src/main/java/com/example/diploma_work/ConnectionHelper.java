@@ -15,11 +15,6 @@ public class ConnectionHelper {
 
     @SuppressLint("NewApi")
     public Connection connectionclass() {
-//        // Local DB
-//        ip = "192.168.50.6";
-//        db = "DiplomaWork";
-//        DBUserNameStr = "Diploma";
-//        DBPasswordStr = "qwe123";
 
 
 //       //SMARTER ASP
