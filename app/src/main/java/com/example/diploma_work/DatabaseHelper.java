@@ -1,12 +1,18 @@
 package com.example.diploma_work;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
@@ -59,7 +65,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int levelsId = categoryJson.getInt("LevelsId");
                 String categoryName = categoryJson.getString("CategoriesName");
 
-                db.execSQL("INSERT INTO Categories (Id, LevelsId, CategoriesName) VALUES (" + categoryId + ", " + levelsId + ", '" + categoryName + "')");
+                // Проверка наличия дублирования CategoriesName
+                Cursor cursor = db.rawQuery("SELECT * FROM Categories WHERE CategoriesName = '" + categoryName + "'", null);
+                if (cursor.getCount() == 0) {
+                    // Если запись с таким именем не найдена, выполняется вставка
+                    db.execSQL("INSERT INTO Categories (Id, LevelsId, CategoriesName) VALUES (" + categoryId + ", " + levelsId + ", '" + categoryName + "')");
+                }
 
                 // Заполнение связанных таблиц для каждой категории
                 JSONArray recordsArray = categoryJson.getJSONArray("Records");
@@ -109,8 +120,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean checkDatabaseExists(Context context) {
+        SQLiteDatabase db = null;
+        try {
+            String path = context.getDatabasePath(DATABASE_NAME).getPath();
+            db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+        } catch (SQLiteException e) {
+            // База данных не существует
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+        return db != null;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Обновление базы данных при необходимости
+    }
+
+
+
+    public List<Categories> getData(int selectedLevelId) {
+        Log.e("GetData", "+1 TTTTTTTTTTTTTTTTTTT ");
+        List<Categories> categories = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        if (db == null) {
+            // Handle database connection error
+            return categories;
+        }
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM Categories WHERE LevelsId = " + selectedLevelId;
+            cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                int categoryNameIndex = cursor.getColumnIndex("CategoriesName");
+
+                do {
+                    if (categoryNameIndex != -1) {
+                        Categories category = new Categories();
+                        category.CategoriesName = cursor.getString(categoryNameIndex);
+                        categories.add(category);
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("GetData", "Error getting categories: " + ex.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        Log.d("Categories", "Categories size: " + categories.size());
+        for (Categories category : categories) {
+            Log.d("Categories", "Category Name: " + category.CategoriesName);
+        }
+        return categories;
     }
 }

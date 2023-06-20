@@ -73,7 +73,7 @@ public class CategoriesAdapter extends BaseAdapter {
         } else {
             holder.button.setBackgroundResource(R.drawable.button_level);
         }
-
+        boolean isUnique = true;
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +115,7 @@ public class CategoriesAdapter extends BaseAdapter {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
-                new ResetDataTask().execute(selectedCategory);
+               // new ResetDataTask().execute(selectedCategory);
             }
         });
         builder.setNegativeButton("Нет", null);
@@ -124,33 +124,33 @@ public class CategoriesAdapter extends BaseAdapter {
         dialog.show();
     }
 
-    private class ResetDataTask extends AsyncTask<String, Void, String> {
+//    private class ResetDataTask extends AsyncTask<String, Void, String> {
+//
+//        @Override
+//        protected String  doInBackground(String... params) {
+//            String selectedCategory = params[0];
+//            ConnectionHelper connectionHelper = new ConnectionHelper();
+//            DatabaseHelper getData = new GetData();
+//            List<Words> words = getData.createNullWords(selectedCategory);
+//
+//            for (Words word : words) {
+//                Log.e("word.CategoryName", word.CategoryName + ": ");
+//                word.setCompleted(0);
+//                connectionHelper.updateWordCompletionStatus(word.Words, word.getCompleted(), selectedCategory);
+//                GlobalVariables.listSucces.remove(selectedCategory);
+//            }
+//
+//            return selectedCategory;
+//        }
 
-        @Override
-        protected String  doInBackground(String... params) {
-            String selectedCategory = params[0];
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            GetData getData = new GetData();
-            List<Words> words = getData.createNullWords(selectedCategory);
-
-            for (Words word : words) {
-                Log.e("word.CategoryName", word.CategoryName + ": ");
-                word.setCompleted(0);
-                connectionHelper.updateWordCompletionStatus(word.Words, word.getCompleted(), selectedCategory);
-                GlobalVariables.listSucces.remove(selectedCategory);
-            }
-
-            return selectedCategory;
-        }
-
-        @Override
-        protected void onPostExecute(String selectedCategory) {
-            progressDialog.dismiss();
-            Toast.makeText(context, "Данные успешно сброшены", Toast.LENGTH_SHORT).show();
-            startWordsFragment(selectedCategory);
-
-        }
-    }
+//        @Override
+//        protected void onPostExecute(String selectedCategory) {
+//            progressDialog.dismiss();
+//            Toast.makeText(context, "Данные успешно сброшены", Toast.LENGTH_SHORT).show();
+//            startWordsFragment(selectedCategory);
+//
+//        }
+//    }
 
     private static class ViewHolder {
         Button button;

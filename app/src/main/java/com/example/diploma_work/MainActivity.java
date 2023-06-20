@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
 
-        MyAsyncTask myAsyncTask = new MyAsyncTask();
-        myAsyncTask.execute();
+//        MyAsyncTask myAsyncTask = new MyAsyncTask();
+//        myAsyncTask.execute();
 
 //        FragmentRegistration fragmentRegistration = new FragmentRegistration();
 //        FragmentManager fragmentManager = getSupportFragmentManager();
@@ -43,10 +44,6 @@ public class MainActivity extends AppCompatActivity  {
         ft.commit();
 
 
-
-        DatabaseHelper dbHelper = new DatabaseHelper(this); // Передайте контекст активности
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         JsonBuilder jsonBuilder = new JsonBuilder();
         String jsonStr = jsonBuilder.buildJsonFromDatabase();
 
@@ -57,28 +54,43 @@ public class MainActivity extends AppCompatActivity  {
             String part = jsonStr.substring(i, endIndex);
             Log.d("JSON", part);
         }
-        // dbHelper.deleteDatabase(this);
-        dbHelper.createTables(db, jsonStr);
-    }
 
+        DatabaseHelper dbHelper = new DatabaseHelper(this); // Передайте контекст активности
+        boolean isDatabaseExists = dbHelper.checkDatabaseExists(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            GetData dataGetter = new GetData();
-            List<Integer> levelIds = dataGetter.getAllLevelIds();
-
-            for (int levelId : levelIds) {
-                boolean referencesExist = dataGetter.checkCategoriesReferences(levelId);
-                if (referencesExist) {
-                    Levels level = new Levels();
-                    level.id = levelId;
-                    GlobalVariables.addGroup(level);
-                    Log.d("MyTag", "Added level with id: " + levelId);
-                }
-            }
-
-            return null;
+        if (isDatabaseExists) {
+            Toast.makeText(this, "База данных уже существует", Toast.LENGTH_SHORT).show();
+        } else {
+            // Создать новую базу данных
+            dbHelper.createTables(db, jsonStr);
         }
+
+
+
+
+        // dbHelper.deleteDatabase(this);
+
     }
+
+
+//    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            GetData dataGetter = new GetData();
+//            List<Integer> levelIds = dataGetter.getAllLevelIds();
+//
+//            for (int levelId : levelIds) {
+//                boolean referencesExist = dataGetter.checkCategoriesReferences(levelId);
+//                if (referencesExist) {
+//                    Levels level = new Levels();
+//                    level.id = levelId;
+//                    GlobalVariables.addGroup(level);
+//                    Log.d("MyTag", "Added level with id: " + levelId);
+//                }
+//            }
+//
+//            return null;
+//        }
+//    }
 }

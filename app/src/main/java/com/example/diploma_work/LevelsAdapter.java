@@ -29,12 +29,19 @@ public class LevelsAdapter extends BaseAdapter {
 
     private GetData getData;
 
-    public LevelsAdapter(FragmentActivity activity, List<Levels> data) {
-        this.fragmentManager = activity.getSupportFragmentManager();
-        this.data = data;
-        this.inflater = LayoutInflater.from(activity);
-        this.getData = new GetData();
-    }
+//    public LevelsAdapter(FragmentActivity activity, List<Levels> data) {
+//        this.fragmentManager = activity.getSupportFragmentManager();
+//        this.data = data;
+//        this.inflater = LayoutInflater.from(activity);
+//        this.getData = new GetData();
+//    }
+public LevelsAdapter(FragmentActivity activity, List<Levels> data) {
+    this.inflater = LayoutInflater.from(activity);
+    this.data = data;
+    this.fragmentManager = activity.getSupportFragmentManager();
+    this.getData = new GetData();
+}
+
 
     @Override
     public int getCount() {
@@ -92,6 +99,7 @@ public class LevelsAdapter extends BaseAdapter {
                     Levels level = data.get(position);
                     Fragment categoriesFragment = new CategoriesFragment();
                     GlobalVariables.globalSelectedLevel = level.id;
+
 
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.Frame_Layout, categoriesFragment);

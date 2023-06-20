@@ -75,7 +75,7 @@ public class CategoriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        categories = new GetData().getData(selectedLevelId);
+        categories = new DatabaseHelper(requireContext()).getData(selectedLevelId);
         adaptercategories = new CategoriesAdapter(requireActivity(), fragmentManager, categories);
         listView.setAdapter(adaptercategories);
     }

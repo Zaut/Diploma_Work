@@ -66,50 +66,57 @@ public class FragmentSignIn extends Fragment {
         SignIntButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String enteredPassword = passwordEditText.getText().toString();
-                String loginName = loginEditText.getText().toString();
-
-                boolean isNameFound = false; // Флаг для проверки совпадения имени пользователя
-                for (Users user : userList) {
-                    if (user.Email.equals(loginName)) {
-
-                        Log.e("users", user.Email + ": ");
-                        Log.e("loginName", loginName + ": ");
-
-
-
-
-
-                        isNameFound = true; // Устанавливаем флаг в true, если найдено совпадение имени
-                        try {
-                            String hashedPassword = PasswordHasher.hashPassword(enteredPassword);
-                            if (user.Password.equals(hashedPassword)) {
-
-                                GlobalVariables.globalLogin = user.Email;
-                                Log.e("globalLogin", GlobalVariables.globalLogin + ": ");
-
-                                Fragment SignIn = new Fragment_level();
+                Fragment SignIn = new Fragment_level();
                                 FragmentManager fragmentManager = getFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.replace(R.id.Frame_Layout, SignIn);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
-
-                            } else {
-                                // Неверный пароль
-                                Toast.makeText(getContext(), "Неверный пароль", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    }
-                }
-                if (!isNameFound) {
-                    // Имя пользователя не найдено
-                    Toast.makeText(getContext(), "Пользователь не найден", Toast.LENGTH_SHORT).show();
-                }
             }
+//                String enteredPassword = passwordEditText.getText().toString();
+//                String loginName = loginEditText.getText().toString();
+//
+//                boolean isNameFound = false; // Флаг для проверки совпадения имени пользователя
+//                for (Users user : userList) {
+//                    if (user.Email.equals(loginName)) {
+//
+//                        Log.e("users", user.Email + ": ");
+//                        Log.e("loginName", loginName + ": ");
+//
+//
+//
+//
+//
+//                        isNameFound = true; // Устанавливаем флаг в true, если найдено совпадение имени
+//                        try {
+//                            String hashedPassword = PasswordHasher.hashPassword(enteredPassword);
+//                            if (user.Password.equals(hashedPassword)) {
+//
+//                                GlobalVariables.globalLogin = user.Email;
+//                                Log.e("globalLogin", GlobalVariables.globalLogin + ": ");
+//
+//                                Fragment SignIn = new Fragment_level();
+//                                FragmentManager fragmentManager = getFragmentManager();
+//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                fragmentTransaction.replace(R.id.Frame_Layout, SignIn);
+//                                fragmentTransaction.addToBackStack(null);
+//                                fragmentTransaction.commit();
+//
+//                            } else {
+//                                // Неверный пароль
+//                                Toast.makeText(getContext(), "Неверный пароль", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } catch (NoSuchAlgorithmException e) {
+//                            e.printStackTrace();
+//                        }
+//                        break;
+//                    }
+//                }
+//                if (!isNameFound) {
+//                    // Имя пользователя не найдено
+//                    Toast.makeText(getContext(), "Пользователь не найден", Toast.LENGTH_SHORT).show();
+//                }
+//            }
         });
 
         registerButton.setOnClickListener(new View.OnClickListener() {

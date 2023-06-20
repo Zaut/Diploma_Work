@@ -1,5 +1,7 @@
 package com.example.diploma_work;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
@@ -16,6 +18,49 @@ public class GetData {
     String ConnectionResult = "";
     Boolean isSuccess = false;
 
+
+    //Работа с серверной БД
+//    public List<Levels> getGroups() {
+//
+//        List<Levels> data = null;
+//        data = new ArrayList<Levels>();
+//        try
+//        {
+//            ConnectionHelper conStr=new ConnectionHelper();
+//            connect =conStr.connectionclass();
+//            if (connect == null)
+//            {
+//                ConnectionResult = "Check Your Internet Access!";
+//            }
+//            else
+//            {
+//
+//                String query = "select * from Levels  ORDER BY Id ASC";
+//                Statement stmt = connect.createStatement();
+//                ResultSet rs = stmt.executeQuery(query);
+//                while (rs.next()){
+//                    Levels datanum=new Levels();
+//                    datanum.id = rs.getInt("Id");
+//                    datanum.name =rs.getString("LevelName");
+//                    data.add(datanum);
+//                }
+//
+//
+//                ConnectionResult = " successful";
+//                isSuccess=true;
+//                connect.close();
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            isSuccess = false;
+//            ConnectionResult = ex.getMessage();
+//        }
+//
+//        return data;
+//    }
+
+
     public List<Levels> getGroups() {
 
         List<Levels> data = null;
@@ -26,7 +71,7 @@ public class GetData {
             connect =conStr.connectionclass();
             if (connect == null)
             {
-                ConnectionResult = "Check Your Internet Access!";
+                ConnectionResult = "Проверьте подключение к Интернету!";
             }
             else
             {
@@ -42,7 +87,7 @@ public class GetData {
                 }
 
 
-                ConnectionResult = " successful";
+                ConnectionResult = "Успешно";
                 isSuccess=true;
                 connect.close();
             }
@@ -56,57 +101,62 @@ public class GetData {
         return data;
     }
 
-    public boolean checkCategoriesReferences(int levelId) {
-        boolean allReferencesExist = true;
-        try {
-            ConnectionHelper conStr = new ConnectionHelper();
-            connect = conStr.connectionclass();
-            if (connect == null) {
-                ConnectionResult = "Check Your Internet Access!";
-                return false;
-            } else {
-                String query = "SELECT Categories.LevelsId FROM Categories LEFT JOIN Levels ON Categories.LevelsId = Levels.Id WHERE Levels.Id = ?";
-                PreparedStatement stmt = connect.prepareStatement(query);
-                stmt.setInt(1, levelId);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    allReferencesExist = false;
-                }
-                connect.close();
-            }
-        } catch (Exception ex) {
-            ConnectionResult = ex.getMessage();
-            return false;
-        }
-        return allReferencesExist;
-    }
 
 
-    public List<Integer> getAllLevelIds() {
-        List<Integer> levelIds = new ArrayList<>();
-        try {
-            ConnectionHelper conStr = new ConnectionHelper();
-            connect = conStr.connectionclass();
-            if (connect == null) {
-                ConnectionResult = "Check Your Internet Access!";
-            } else {
-                String query = "SELECT Id FROM Levels";
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    int levelId = rs.getInt("Id");
-                    levelIds.add(levelId);
-                }
-                ConnectionResult = " successful";
-                isSuccess = true;
-                connect.close();
-            }
-        } catch (Exception ex) {
-            isSuccess = false;
-            ConnectionResult = ex.getMessage();
-        }
-        return levelIds;
-    }
+
+
+
+//    public boolean checkCategoriesReferences(int levelId) {
+//        boolean allReferencesExist = true;
+//        try {
+//            ConnectionHelper conStr = new ConnectionHelper();
+//            connect = conStr.connectionclass();
+//            if (connect == null) {
+//                ConnectionResult = "Check Your Internet Access!";
+//                return false;
+//            } else {
+//                String query = "SELECT Categories.LevelsId FROM Categories LEFT JOIN Levels ON Categories.LevelsId = Levels.Id WHERE Levels.Id = ?";
+//                PreparedStatement stmt = connect.prepareStatement(query);
+//                stmt.setInt(1, levelId);
+//                ResultSet rs = stmt.executeQuery();
+//                if (rs.next()) {
+//                    allReferencesExist = false;
+//                }
+//                connect.close();
+//            }
+//        } catch (Exception ex) {
+//            ConnectionResult = ex.getMessage();
+//            return false;
+//        }
+//        return allReferencesExist;
+//    }
+
+
+//    public List<Integer> getAllLevelIds() {
+//        List<Integer> levelIds = new ArrayList<>();
+//        try {
+//            ConnectionHelper conStr = new ConnectionHelper();
+//            connect = conStr.connectionclass();
+//            if (connect == null) {
+//                ConnectionResult = "Check Your Internet Access!";
+//            } else {
+//                String query = "SELECT Id FROM Levels";
+//                Statement stmt = connect.createStatement();
+//                ResultSet rs = stmt.executeQuery(query);
+//                while (rs.next()) {
+//                    int levelId = rs.getInt("Id");
+//                    levelIds.add(levelId);
+//                }
+//                ConnectionResult = " successful";
+//                isSuccess = true;
+//                connect.close();
+//            }
+//        } catch (Exception ex) {
+//            isSuccess = false;
+//            ConnectionResult = ex.getMessage();
+//        }
+//        return levelIds;
+//    }
 
     public List<Users> getUsers() {
 
@@ -152,34 +202,38 @@ public class GetData {
 
 
 
-    public  List<Categories> getData(int selectedLevelId) {
-        List<Categories> categories = null;
-        categories = new ArrayList<Categories>();
-        try {
-            ConnectionHelper conStr=new ConnectionHelper();
-            connect =conStr.connectionclass();
-            if (connect == null) {
-                ConnectionResult = "Check Your Internet Access!";
-            } else {
-                Log.e("selectedLevelId", selectedLevelId + ": ");
-               String query = "SELECT * FROM Categories  WHERE LevelsId = " + selectedLevelId;
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    Categories category = new Categories();
-                    category.CategoriesName = rs.getString("CategoriesName");
-                    categories.add(category);
-                }
-                connect.close();
-            }
-        } catch (Exception ex) {
-            Log.e("GetData", "Error getting categories: " + ex.getMessage());
-            isSuccess = false;
-            ConnectionResult = ex.getMessage();
-            categories = null;
-        }
-        return categories;
-    }
+//    public  List<Categories> getData(int selectedLevelId) {
+//        List<Categories> categories = null;
+//        categories = new ArrayList<Categories>();
+//        try {
+//            ConnectionHelper conStr=new ConnectionHelper();
+//            connect =conStr.connectionclass();
+//            if (connect == null) {
+//                ConnectionResult = "Check Your Internet Access!";
+//            } else {
+//                Log.e("selectedLevelId", selectedLevelId + ": ");
+//               String query = "SELECT * FROM Categories  WHERE LevelsId = " + selectedLevelId;
+//                Statement stmt = connect.createStatement();
+//                ResultSet rs = stmt.executeQuery(query);
+//                while (rs.next()) {
+//                    Categories category = new Categories();
+//                    category.CategoriesName = rs.getString("CategoriesName");
+//                    categories.add(category);
+//                }
+//                connect.close();
+//            }
+//        } catch (Exception ex) {
+//            Log.e("GetData", "Error getting categories: " + ex.getMessage());
+//            isSuccess = false;
+//            ConnectionResult = ex.getMessage();
+//            categories = null;
+//        }
+//        return categories;
+//    }
+
+
+
+
 
     public  List<Words> getWords(String selectedCategories) {
         List<Words> words = null;
