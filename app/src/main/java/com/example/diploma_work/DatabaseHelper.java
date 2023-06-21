@@ -1,10 +1,12 @@
 package com.example.diploma_work;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -12,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -54,7 +57,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 JSONObject levelJson = levelsArray.getJSONObject(i);
                 int id = levelJson.getInt("Id");
                 String levelName = levelJson.getString("LevelName");
-                db.execSQL("INSERT INTO Levels (Id, LevelName) VALUES (" + id + ", '" + levelName + "')");
+
+                // Проверка наличия дублирования LevelName
+                Cursor cursor = db.rawQuery("SELECT * FROM Levels WHERE LevelName = '" + levelName + "'", null);
+                if (cursor.getCount() == 0) {
+                    // Если запись с таким именем не найдена, выполняется вставка
+                    db.execSQL("INSERT INTO Levels (Id, LevelName) VALUES (" + id + ", '" + levelName + "')");
+                }
             }
 
             // Заполнение таблицы Categories и связанных таблиц
@@ -78,15 +87,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     JSONObject recordJson = recordsArray.getJSONObject(j);
                     int recordId = recordJson.getInt("Id");
 
-
                     String recordCategoryName = recordJson.getString("CategoryName").replace("'", "''");
                     String words = recordJson.getString("Words").replace("'", "''");
                     String transcriptions = recordJson.getString("Transcriptions").replace("'", "''");
                     String sentence = recordJson.getString("Sentence").replace("'", "''");
                     String translateWords = recordJson.getString("TranslateWords").replace("'", "''");
                     String transSentence = recordJson.getString("TransSentence").replace("'", "''");
-                    String picture = recordJson.getString("Picture").replace("'", "''");
 
+                    // Get the picture string from the JSON object
+                    String pictureString = recordJson.getString("Picture").replace("'", "''");
+                    // Decode the picture string from Base64 to byte array
+                    byte[] pictureBytes = Base64.decode(pictureString, Base64.DEFAULT);
+                    Log.d("Debug", "pictureBytesDBHelper: " + Arrays.toString(pictureBytes));
 
                     int isCompleted = recordJson.getInt("Is_completed");
 
@@ -107,8 +119,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String insertRecordQuery = "REPLACE INTO " + categoryName + " (Id, CategoryName, Words, Transcriptions, Sentence, " +
                             "TranslateWords, TransSentence, Picture, Is_completed) VALUES (" +
                             recordId + ", '" + recordCategoryName + "', '" + words + "', '" + transcriptions + "', '" + sentence + "', '" +
-                            translateWords + "', '" + transSentence + "', '" + picture + "', " + isCompleted + ")";
-                    db.execSQL(insertRecordQuery);
+                            translateWords + "', '" + transSentence + "', ?, " + isCompleted + ")";
+                    db.execSQL(insertRecordQuery, new Object[]{pictureBytes});
                 }
             }
 
@@ -183,4 +195,206 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return categories;
     }
+
+    public List<Levels> getGroups(Context context) {
+        List<Levels> data = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        if (db == null) {
+            // Handle database connection error
+            return data;
+        }
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM Levels ORDER BY Id ASC";
+            cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex("Id");
+                int nameIndex = cursor.getColumnIndex("LevelName");
+
+                do {
+                    if (idIndex != -1 && nameIndex != -1) {
+                        Levels level = new Levels();
+                        level.id = cursor.getInt(idIndex);
+                        level.name = cursor.getString(nameIndex);
+                        data.add(level);
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("getGroups", "Error getting groups: " + ex.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return data;
+    }
+
+
+
+    public List<Words> createNullWords(String selectedCategories) {
+        List<Words> words = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        if (db == null) {
+            // Обработка ошибки подключения к базе данных
+            return words;
+        }
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM " + selectedCategories;
+            cursor = db.rawQuery(query, null);
+
+            int categoryNameIndex = cursor.getColumnIndex("CategoryName");
+            int wordsIndex = cursor.getColumnIndex("Words");
+            int translateWordsIndex = cursor.getColumnIndex("TranslateWords");
+            int sentenceIndex = cursor.getColumnIndex("Sentence");
+            int transcriptionsIndex = cursor.getColumnIndex("Transcriptions");
+            int transSentenceIndex = cursor.getColumnIndex("TransSentence");
+            int completedIndex = cursor.getColumnIndex("Is_completed");
+            int pictureIndex = cursor.getColumnIndex("Picture");
+
+            while (cursor.moveToNext()) {
+                Words word = new Words();
+                if (categoryNameIndex >= 0) {
+                    word.CategoryName = cursor.getString(categoryNameIndex);
+                }
+                if (wordsIndex >= 0) {
+                    word.Words = cursor.getString(wordsIndex);
+                }
+                if (translateWordsIndex >= 0) {
+                    word.TranslateWords = cursor.getString(translateWordsIndex);
+                }
+                if (sentenceIndex >= 0) {
+                    word.Sentence = cursor.getString(sentenceIndex);
+                }
+                if (transcriptionsIndex >= 0) {
+                    word.Transcriptions = cursor.getString(transcriptionsIndex);
+                }
+                if (transSentenceIndex >= 0) {
+                    word.TransSentence = cursor.getString(transSentenceIndex);
+                }
+                if (completedIndex >= 0) {
+                    word.Completed = cursor.getInt(completedIndex);
+                }
+                if (pictureIndex >= 0) {
+                    byte[] imageBytes = cursor.getBlob(pictureIndex);
+                    word.Picture = imageBytes;
+                }
+
+                Log.e("Words",  word.Words );
+                Log.e("TranslateWords",  word.TranslateWords );
+                Log.e("TranslateWords", Arrays.toString(word.Picture));
+                Log.e("Completed", String.valueOf(word.Completed));
+                words.add(word);
+            }
+        } catch (Exception ex) {
+            Log.e("createNullWords", "Error getting words: " + ex.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return words;
+    }
+
+
+    public void updateWordCompletionStatus(String word, int completed, String category) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put("Is_completed", completed);
+
+            String whereClause = "Words = ?";
+            String[] whereArgs = {word};
+
+            int rowsAffected = db.update(category, values, whereClause, whereArgs);
+            if (rowsAffected > 0) {
+                Log.d("Update Success", "Updated word completion status");
+            } else {
+                Log.d("Update Failed", "No matching word found");
+            }
+        } catch (Exception e) {
+            Log.e("Error updating word", e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
+
+    public List<Integer> getAllLevelIds() {
+        List<Integer> levelIds = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        if (db == null) {
+            // Обработка ошибки подключения к базе данных
+            return levelIds;
+        }
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT Id FROM Levels";
+            cursor = db.rawQuery(query, null);
+
+            int columnIndex = cursor.getColumnIndex("Id");
+            if (columnIndex != -1) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        int levelId = cursor.getInt(columnIndex);
+                        levelIds.add(levelId);
+                    } while (cursor.moveToNext());
+                }
+            } else {
+                Log.e("getAllLevelIds", "Column 'Id' not found in the Cursor");
+            }
+        } catch (Exception ex) {
+            Log.e("getAllLevelIds", "Error getting level IDs: " + ex.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return levelIds;
+    }
+
+    public boolean checkCategoriesReferences(int levelId) {
+        boolean allReferencesExist = true;
+        SQLiteDatabase db = getReadableDatabase();
+
+        if (db == null) {
+            // Обработка ошибки подключения к базе данных
+            return false;
+        }
+
+        Cursor cursor = null;
+        try {
+            String query = "SELECT Categories.LevelsId FROM Categories LEFT JOIN Levels ON Categories.LevelsId = Levels.Id WHERE Levels.Id = ?";
+            String[] selectionArgs = {String.valueOf(levelId)};
+            cursor = db.rawQuery(query, selectionArgs);
+
+            if (cursor.moveToFirst()) {
+                allReferencesExist = false;
+            }
+        } catch (Exception ex) {
+            Log.e("checkCategoriesReferences", "Error checking category references: " + ex.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return allReferencesExist;
+    }
+
+
+
 }
