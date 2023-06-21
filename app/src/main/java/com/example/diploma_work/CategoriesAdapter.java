@@ -26,6 +26,8 @@ public class CategoriesAdapter extends BaseAdapter {
     private List<Categories> data;
     private LayoutInflater inflater;
 
+    private DatabaseHelper databaseHelper;
+
     private ProgressDialog progressDialog;
     private FragmentManager fragmentManager;
 
@@ -115,7 +117,7 @@ public class CategoriesAdapter extends BaseAdapter {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
-               // new ResetDataTask().execute(selectedCategory);
+                  new ResetDataTask(context).execute(selectedCategory);
             }
         });
         builder.setNegativeButton("Нет", null);
@@ -124,33 +126,35 @@ public class CategoriesAdapter extends BaseAdapter {
         dialog.show();
     }
 
-//    private class ResetDataTask extends AsyncTask<String, Void, String> {
-//
-//        @Override
-//        protected String  doInBackground(String... params) {
-//            String selectedCategory = params[0];
-//            ConnectionHelper connectionHelper = new ConnectionHelper();
-//            DatabaseHelper getData = new GetData();
-//            List<Words> words = getData.createNullWords(selectedCategory);
-//
-//            for (Words word : words) {
-//                Log.e("word.CategoryName", word.CategoryName + ": ");
-//                word.setCompleted(0);
-//                connectionHelper.updateWordCompletionStatus(word.Words, word.getCompleted(), selectedCategory);
-//                GlobalVariables.listSucces.remove(selectedCategory);
-//            }
-//
-//            return selectedCategory;
-//        }
+    private class ResetDataTask extends AsyncTask<String, Void, String> {
+        private Context context;
+        public ResetDataTask(Context context) {
+            this.context = context;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            String selectedCategory = params[0];
+            databaseHelper = new DatabaseHelper(context);  // Передача правильного контекста
+            List<Words> words = databaseHelper.createNullWords(selectedCategory);
 
-//        @Override
-//        protected void onPostExecute(String selectedCategory) {
-//            progressDialog.dismiss();
-//            Toast.makeText(context, "Данные успешно сброшены", Toast.LENGTH_SHORT).show();
-//            startWordsFragment(selectedCategory);
-//
-//        }
-//    }
+            for (Words word : words) {
+                Log.e("word.CategoryName", word.CategoryName + ": ");
+                word.setCompleted(0);
+                databaseHelper.updateWordCompletionStatus(word.Words, word.getCompleted(), selectedCategory);
+                GlobalVariables.listSucces.remove(selectedCategory);
+            }
+
+            return selectedCategory;
+        }
+
+        @Override
+        protected void onPostExecute(String selectedCategory) {
+            progressDialog.dismiss();
+            Toast.makeText(context, "Данные успешно сброшены", Toast.LENGTH_SHORT).show();
+            startWordsFragment(selectedCategory);
+
+        }
+    }
 
     private static class ViewHolder {
         Button button;

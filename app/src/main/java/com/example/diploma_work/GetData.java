@@ -1,11 +1,14 @@
 package com.example.diploma_work;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -19,144 +22,7 @@ public class GetData {
     Boolean isSuccess = false;
 
 
-    //Работа с серверной БД
-//    public List<Levels> getGroups() {
-//
-//        List<Levels> data = null;
-//        data = new ArrayList<Levels>();
-//        try
-//        {
-//            ConnectionHelper conStr=new ConnectionHelper();
-//            connect =conStr.connectionclass();
-//            if (connect == null)
-//            {
-//                ConnectionResult = "Check Your Internet Access!";
-//            }
-//            else
-//            {
-//
-//                String query = "select * from Levels  ORDER BY Id ASC";
-//                Statement stmt = connect.createStatement();
-//                ResultSet rs = stmt.executeQuery(query);
-//                while (rs.next()){
-//                    Levels datanum=new Levels();
-//                    datanum.id = rs.getInt("Id");
-//                    datanum.name =rs.getString("LevelName");
-//                    data.add(datanum);
-//                }
-//
-//
-//                ConnectionResult = " successful";
-//                isSuccess=true;
-//                connect.close();
-//            }
-//        }
-//        catch (Exception ex)
-//        {
-//            isSuccess = false;
-//            ConnectionResult = ex.getMessage();
-//        }
-//
-//        return data;
-//    }
 
-
-    public List<Levels> getGroups() {
-
-        List<Levels> data = null;
-        data = new ArrayList<Levels>();
-        try
-        {
-            ConnectionHelper conStr=new ConnectionHelper();
-            connect =conStr.connectionclass();
-            if (connect == null)
-            {
-                ConnectionResult = "Проверьте подключение к Интернету!";
-            }
-            else
-            {
-
-                String query = "select * from Levels  ORDER BY Id ASC";
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()){
-                    Levels datanum=new Levels();
-                    datanum.id = rs.getInt("Id");
-                    datanum.name =rs.getString("LevelName");
-                    data.add(datanum);
-                }
-
-
-                ConnectionResult = "Успешно";
-                isSuccess=true;
-                connect.close();
-            }
-        }
-        catch (Exception ex)
-        {
-            isSuccess = false;
-            ConnectionResult = ex.getMessage();
-        }
-
-        return data;
-    }
-
-
-
-
-
-
-//    public boolean checkCategoriesReferences(int levelId) {
-//        boolean allReferencesExist = true;
-//        try {
-//            ConnectionHelper conStr = new ConnectionHelper();
-//            connect = conStr.connectionclass();
-//            if (connect == null) {
-//                ConnectionResult = "Check Your Internet Access!";
-//                return false;
-//            } else {
-//                String query = "SELECT Categories.LevelsId FROM Categories LEFT JOIN Levels ON Categories.LevelsId = Levels.Id WHERE Levels.Id = ?";
-//                PreparedStatement stmt = connect.prepareStatement(query);
-//                stmt.setInt(1, levelId);
-//                ResultSet rs = stmt.executeQuery();
-//                if (rs.next()) {
-//                    allReferencesExist = false;
-//                }
-//                connect.close();
-//            }
-//        } catch (Exception ex) {
-//            ConnectionResult = ex.getMessage();
-//            return false;
-//        }
-//        return allReferencesExist;
-//    }
-
-
-//    public List<Integer> getAllLevelIds() {
-//        List<Integer> levelIds = new ArrayList<>();
-//        try {
-//            ConnectionHelper conStr = new ConnectionHelper();
-//            connect = conStr.connectionclass();
-//            if (connect == null) {
-//                ConnectionResult = "Check Your Internet Access!";
-//            } else {
-//                String query = "SELECT Id FROM Levels";
-//                Statement stmt = connect.createStatement();
-//                ResultSet rs = stmt.executeQuery(query);
-//                while (rs.next()) {
-//                    int levelId = rs.getInt("Id");
-//                    levelIds.add(levelId);
-//                }
-//                ConnectionResult = " successful";
-//                isSuccess = true;
-//                connect.close();
-//            }
-//        } catch (Exception ex) {
-//            isSuccess = false;
-//            ConnectionResult = ex.getMessage();
-//        }
-//        return levelIds;
-//    }
 
     public List<Users> getUsers() {
 
@@ -202,117 +68,69 @@ public class GetData {
 
 
 
-//    public  List<Categories> getData(int selectedLevelId) {
-//        List<Categories> categories = null;
-//        categories = new ArrayList<Categories>();
-//        try {
-//            ConnectionHelper conStr=new ConnectionHelper();
-//            connect =conStr.connectionclass();
-//            if (connect == null) {
-//                ConnectionResult = "Check Your Internet Access!";
-//            } else {
-//                Log.e("selectedLevelId", selectedLevelId + ": ");
-//               String query = "SELECT * FROM Categories  WHERE LevelsId = " + selectedLevelId;
-//                Statement stmt = connect.createStatement();
-//                ResultSet rs = stmt.executeQuery(query);
-//                while (rs.next()) {
-//                    Categories category = new Categories();
-//                    category.CategoriesName = rs.getString("CategoriesName");
-//                    categories.add(category);
-//                }
-//                connect.close();
-//            }
-//        } catch (Exception ex) {
-//            Log.e("GetData", "Error getting categories: " + ex.getMessage());
-//            isSuccess = false;
-//            ConnectionResult = ex.getMessage();
-//            categories = null;
-//        }
-//        return categories;
-//    }
 
+    public List<Words> getWords(Context context, String selectedCategories) {
+        List<Words> words = new ArrayList<>();
 
-
-
-
-    public  List<Words> getWords(String selectedCategories) {
-        List<Words> words = null;
-        words = new ArrayList<Words>();
         try {
-            ConnectionHelper conStr=new ConnectionHelper();
-            connect =conStr.connectionclass();
-            if (connect == null) {
-                ConnectionResult = "Check Your Internet Access!";
-            } else {
-                Log.e("selectedCategories", selectedCategories + ": ");
-               //String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
-               String query = "SELECT * FROM " + selectedCategories + " WHERE Is_completed = " + 0;
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    Words word = new Words();
-                    word.CategoryName = rs.getString("CategoryName");
-                    word.Words = rs.getString("Words");
-                    word.TranslateWords = rs.getString("TranslateWords");
-                    word.Sentence = rs.getString("Sentence");
-                    word.Transcriptions = rs.getString("Transcriptions");
-                    word.TransSentence = rs.getString("TransSentence");
-                    word.Completed = rs.getInt("Is_completed");
-                    byte[] imageBytes = rs.getBytes("Picture");
+            DatabaseHelper dbHelper = new DatabaseHelper(context);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            String query = "SELECT * FROM " + selectedCategories + " WHERE Is_completed = " + 0;
+            Cursor cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                Words word = new Words();
+                int categoryNameIndex = cursor.getColumnIndex("CategoryName");
+                if (categoryNameIndex != -1) {
+                    word.CategoryName = cursor.getString(categoryNameIndex);
+                }
+
+                int wordsIndex = cursor.getColumnIndex("Words");
+                if (wordsIndex != -1) {
+                    word.Words = cursor.getString(wordsIndex);
+                }
+
+                int translateWordsIndex = cursor.getColumnIndex("TranslateWords");
+                if (translateWordsIndex != -1) {
+                    word.TranslateWords = cursor.getString(translateWordsIndex);
+                }
+
+                int sentenceIndex = cursor.getColumnIndex("Sentence");
+                if (sentenceIndex != -1) {
+                    word.Sentence = cursor.getString(sentenceIndex);
+                }
+
+                int transcriptionsIndex = cursor.getColumnIndex("Transcriptions");
+                if (transcriptionsIndex != -1) {
+                    word.Transcriptions = cursor.getString(transcriptionsIndex);
+                }
+
+                int transSentenceIndex = cursor.getColumnIndex("TransSentence");
+                if (transSentenceIndex != -1) {
+                    word.TransSentence = cursor.getString(transSentenceIndex);
+                }
+
+                int completedIndex = cursor.getColumnIndex("Is_completed");
+                if (completedIndex != -1) {
+                    word.Completed = cursor.getInt(completedIndex);
+                }
+
+                int pictureIndex = cursor.getColumnIndex("Picture");
+                if (pictureIndex != -1) {
+                    byte[] imageBytes = cursor.getBlob(pictureIndex);
                     word.Picture = imageBytes;
-
-                    Log.e("Words",  word.Words );
-                    Log.e("TranslateWords",  word.TranslateWords );
-                    Log.e("TranslateWords", Arrays.toString(word.Picture));
-                    Log.e("Completed", String.valueOf(word.Completed));
-                    words.add(word);
                 }
-                connect.close();
-            }
-        } catch (Exception ex) {
-            Log.e("GetData", "Error getting categories: " + ex.getMessage());
-            isSuccess = false;
-            ConnectionResult = ex.getMessage();
-            words = null;
-        }
-        return words;
-    }
 
-    public  List<Words> createNullWords(String selectedCategories) {
-        List<Words> words = null;
-        words = new ArrayList<Words>();
-        try {
-            ConnectionHelper conStr=new ConnectionHelper();
-            connect =conStr.connectionclass();
-            if (connect == null) {
-                ConnectionResult = "Check Your Internet Access!";
-            } else {
-                Log.e("selectedCategories", selectedCategories + ": ");
-//                String query = "SELECT * FROM Categories  WHERE CategoryName = " + selectedCategories;
-                String query = "SELECT * FROM " + selectedCategories;
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    Words word = new Words();
-                    word.CategoryName = rs.getString("CategoryName");
-                    word.Words = rs.getString("Words");
-                    word.TranslateWords = rs.getString("TranslateWords");
-                    word.Sentence = rs.getString("Sentence");
-                    word.Transcriptions = rs.getString("Transcriptions");
-                    word.TransSentence = rs.getString("TransSentence");
-                    word.Completed = rs.getInt("Is_completed");
-                       byte[] imageBytes = rs.getBytes("Picture");
-                       word.Picture = imageBytes;
-
-                    Log.e("Words",  word.Words );
-                    Log.e("TranslateWords",  word.TranslateWords );
-                    Log.e("TranslateWords", Arrays.toString(word.Picture));
-                    Log.e("Completed", String.valueOf(word.Completed));
-                    words.add(word);
-                }
-                connect.close();
+                Log.e("Words", word.Words);
+                Log.e("TranslateWords", word.TranslateWords);
+                Log.e("Picture", Arrays.toString(word.Picture));
+                Log.e("Completed", String.valueOf(word.Completed));
+                Log.e("Picture", String.valueOf(word.Picture));
+                words.add(word);
             }
-        } catch (Exception ex) {
+            cursor.close();
+            db.close();
+        } catch (SQLiteException ex) {
             Log.e("GetData", "Error getting categories: " + ex.getMessage());
             isSuccess = false;
             ConnectionResult = ex.getMessage();

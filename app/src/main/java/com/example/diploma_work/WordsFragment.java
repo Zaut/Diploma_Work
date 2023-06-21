@@ -50,7 +50,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
     private ImageButton cancelButton;
 
-
+    private DatabaseHelper dbHelp;
     private  ImageView leftArrow, rightArrow, image_card, image_card2;
     private TextToSpeech textToSpeech;
 
@@ -81,14 +81,6 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         Log.e("selectedCategories", selectedCategories + ": ");
 
 
-//        GetData getData = new GetData();
-//        List<Words> wordL = getData.getWords(String.valueOf(currentIndex));
-//        for (Words word : wordL) {
-//            Log.e("Image", word.Image);
-//            Log.e("Separator", "----------------------");
-//        }
-
-
 
 
 
@@ -115,8 +107,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
 
         textToSpeech = new TextToSpeech(getActivity(), this);
 
-
-        wordsList = new GetData().getWords(selectedCategories);
+        wordsList = new GetData().getWords(requireContext(), selectedCategories);
         currentIndex = 0;
 
 
@@ -165,9 +156,6 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
             transSentence.setText(firstWord.TransSentence);
             SVGConverter.displaySVGImage(firstWord.getImage(), image_card);
             SVGConverter.displaySVGImage(firstWord.getImage(), image_card2);
-
-
-
 
         }
 
@@ -280,10 +268,10 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
         if (status == TextToSpeech.SUCCESS) {
             int result = textToSpeech.setLanguage(Locale.ENGLISH);
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                // Обработка ошибки недоступности языка
+
             }
         } else {
-            // Обработка ошибки инициализации TextToSpeech
+
         }
     }
     @Override
@@ -308,7 +296,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
     }
 
     private void showNextWord() {
-        ConnectionHelper connectionHelper = new ConnectionHelper();
+        dbHelp = new DatabaseHelper(requireContext());
         if (wordsList != null && !wordsList.isEmpty()) {
             currentIndex++;
             if (currentIndex < wordsList.size()) {
@@ -328,7 +316,7 @@ public class WordsFragment extends Fragment implements TextToSpeech.OnInitListen
                     Log.e("currentIndex", currentIndex + ": ");
                     previousWord.setCompleted(1);
                     Log.e("previousWord", previousWord.Completed + ": ");
-                    connectionHelper.updateWordCompletionStatus(previousWord.Words, previousWord.getCompleted(), selectedCategories);
+                    dbHelp.updateWordCompletionStatus(previousWord.Words, previousWord.getCompleted(), selectedCategories);
                 }
                 GlobalVariables.saveState(getContext());
 

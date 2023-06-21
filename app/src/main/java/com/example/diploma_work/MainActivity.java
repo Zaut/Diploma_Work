@@ -15,8 +15,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
 
 
-
-
+private  DatabaseHelper databaseHelper;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +24,15 @@ public class MainActivity extends AppCompatActivity  {
 
         Context appContext = getApplicationContext();
 
+        context = this;
+
         // Использование контекста приложения
         GlobalVariables.loadState(appContext);
         setContentView(R.layout.activity_main);
 
 
-//        MyAsyncTask myAsyncTask = new MyAsyncTask();
-//        myAsyncTask.execute();
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
 
 //        FragmentRegistration fragmentRegistration = new FragmentRegistration();
 //        FragmentManager fragmentManager = getSupportFragmentManager();
@@ -69,28 +71,27 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-        // dbHelper.deleteDatabase(this);
 
     }
 
 
-//    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            GetData dataGetter = new GetData();
-//            List<Integer> levelIds = dataGetter.getAllLevelIds();
-//
-//            for (int levelId : levelIds) {
-//                boolean referencesExist = dataGetter.checkCategoriesReferences(levelId);
-//                if (referencesExist) {
-//                    Levels level = new Levels();
-//                    level.id = levelId;
-//                    GlobalVariables.addGroup(level);
-//                    Log.d("MyTag", "Added level with id: " + levelId);
-//                }
-//            }
-//
-//            return null;
-//        }
-//    }
+    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            databaseHelper = new DatabaseHelper(context);
+            List<Integer> levelIds = databaseHelper.getAllLevelIds();
+
+            for (int levelId : levelIds) {
+                boolean referencesExist = databaseHelper.checkCategoriesReferences(levelId);
+                if (referencesExist) {
+                    Levels level = new Levels();
+                    level.id = levelId;
+                    GlobalVariables.addGroup(level);
+                    Log.d("MyTag", "Added level with id: " + levelId);
+                }
+            }
+
+            return null;
+        }
+    }
 }

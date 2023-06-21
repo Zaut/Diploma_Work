@@ -1,5 +1,8 @@
 package com.example.diploma_work;
 
+import android.util.Base64;
+import android.util.Log;
+
 import com.example.diploma_work.ConnectionHelper;
 
 import org.json.JSONArray;
@@ -9,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.util.Arrays;
 
 public class JsonBuilder {
     public String buildJsonFromDatabase() {
@@ -65,7 +69,14 @@ public class JsonBuilder {
                     tableJson.put("Sentence", tableRs.getString("Sentence"));
                     tableJson.put("TranslateWords", tableRs.getString("TranslateWords"));
                     tableJson.put("TransSentence", tableRs.getString("TransSentence"));
-                    tableJson.put("Picture", tableRs.getString("Picture"));
+
+
+                    byte[] pictureBytes = tableRs.getBytes("Picture");
+                    String pictureString = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
+                    Log.e("DEBUG", "pictureStringJSONBUILER: " + pictureString);
+                    tableJson.put("Picture", pictureString);
+
+
                     tableJson.put("Is_completed", tableRs.getInt("Is_completed"));
 
                     tableArray.put(tableJson);
